@@ -21,6 +21,7 @@ import { StyleSelector } from "@/components/style-selector"
 import { GenerationHistory } from "@/components/generation-history"
 import { GenerationProcess } from "@/components/generation-process"
 import { ImageViewer } from "@/components/image-viewer"
+import { ImageUrls } from "@/lib/image-service"
 import {
   AlertCircle,
   Download,
@@ -133,8 +134,8 @@ export function Playground() {
 
     // Simulate generation process
     setTimeout(() => {
-      // For demo purposes, we'll use a random image from our examples
-      const generatedResult = "/images/generated-result.png"
+      // For demo purposes, we'll use a generated image based on the prompt and style
+      const generatedResult = ImageUrls.generationResult(prompt, selectedStyle.category || "abstract", aspectRatio, "premium")
       setGeneratedImage(generatedResult)
       setIsGenerating(false)
 
@@ -231,7 +232,7 @@ export function Playground() {
                     <CardContent>
                       <div className="flex items-center gap-4">
                         <img
-                          src={selectedStyle.coverImage || "/placeholder.svg"}
+                          src={selectedStyle.coverImage || ImageUrls.placeholder(80, 80, selectedStyle.title)}
                           alt={selectedStyle.title}
                           className="w-20 h-20 object-cover rounded-md"
                         />
@@ -329,7 +330,7 @@ export function Playground() {
                             ) : (
                               <div className="mt-1.5 relative">
                                 <img
-                                  src={referenceImage || "/placeholder.svg"}
+                                  src={referenceImage || ImageUrls.placeholder(400, 160, "Reference Image")}
                                   alt="Reference"
                                   className="w-full h-40 object-contain rounded-lg border border-border"
                                 />
@@ -461,7 +462,7 @@ export function Playground() {
                       <CardContent>
                         <div className="relative aspect-square overflow-hidden rounded-lg border border-border">
                           <img
-                            src={generatedImage || "/placeholder.svg"}
+                            src={generatedImage || ImageUrls.placeholder(400, 400, "Generated Image")}
                             alt="Generated image"
                             className="object-contain w-full h-full"
                           />
@@ -629,23 +630,17 @@ const styles = [
   {
     id: "1",
     title: "Neon Dreams",
+    category: "cyberpunk",
     description:
       "Vibrant cyberpunk aesthetics with neon-lit cityscapes, perfect for futuristic scenes with a touch of nostalgia. Creates stunning night scenes with glowing elements.",
     creator: {
       name: "Alex Rivera",
       handle: "@neonartist",
-      avatar: "/images/avatar-1.png",
+      avatar: ImageUrls.creatorAvatar("neonartist"),
       verified: true,
     },
-    coverImage: "/images/cyberpunk-neon.png",
-    examples: [
-      "/images/cyberpunk-neon.png",
-      "/images/cyberpunk-example-1.png",
-      "/images/cyberpunk-example-2.png",
-      "/images/cyberpunk-example-3.png",
-      "/images/cyberpunk-example-4.png",
-      "/images/cyberpunk-example-5.png",
-    ],
+    coverImage: ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
+    examples: ImageUrls.styleExamples("Neon Dreams", "cyberpunk", 6),
     stats: {
       likes: 1243,
       generations: 5621,
@@ -670,21 +665,17 @@ const styles = [
   {
     id: "2",
     title: "Vintage Film",
+    category: "vintage",
     description:
       "Classic film aesthetics with grain, light leaks, and warm tones. Perfect for creating nostalgic, timeless imagery with a touch of analog imperfection.",
     creator: {
       name: "Jamie Chen",
       handle: "@retrovisuals",
-      avatar: "/images/avatar-2.png",
+      avatar: ImageUrls.creatorAvatar("retrovisuals"),
       verified: true,
     },
-    coverImage: "/images/vintage-film.png",
-    examples: [
-      "/images/vintage-film.png",
-      "/images/vintage-example-1.png",
-      "/images/vintage-example-2.png",
-      "/images/vintage-example-3.png",
-    ],
+    coverImage: ImageUrls.styleImage("Vintage Film", "vintage"),
+    examples: ImageUrls.styleExamples("Vintage Film", "vintage", 4),
     stats: {
       likes: 982,
       generations: 4210,
@@ -708,21 +699,17 @@ const styles = [
   {
     id: "3",
     title: "Abstract Waves",
+    category: "abstract",
     description:
       "Fluid, colorful abstract patterns with smooth gradients and dynamic wave-like forms. Ideal for creating modern, artistic backgrounds and textures.",
     creator: {
       name: "Sam Wilson",
       handle: "@wavecreator",
-      avatar: "/images/avatar-3.png",
+      avatar: ImageUrls.creatorAvatar("wavecreator"),
       verified: false,
     },
-    coverImage: "/images/abstract-waves.png",
-    examples: [
-      "/images/abstract-waves.png",
-      "/images/abstract-example-1.png",
-      "/images/abstract-example-2.png",
-      "/images/abstract-example-3.png",
-    ],
+    coverImage: ImageUrls.styleImage("Abstract Waves", "abstract"),
+    examples: ImageUrls.styleExamples("Abstract Waves", "abstract", 4),
     stats: {
       likes: 756,
       generations: 3150,
@@ -746,21 +733,17 @@ const styles = [
   {
     id: "4",
     title: "Pixel Art",
+    category: "pixel",
     description:
       "Retro pixel art style reminiscent of classic video games. Creates charming, nostalgic imagery with distinct pixelated edges and limited color palettes.",
     creator: {
       name: "Taylor Kim",
       handle: "@pixelmaster",
-      avatar: "/images/avatar-4.png",
+      avatar: ImageUrls.creatorAvatar("pixelmaster"),
       verified: true,
     },
-    coverImage: "/images/pixel-art.png",
-    examples: [
-      "/images/pixel-art.png",
-      "/images/pixel-example-1.png",
-      "/images/pixel-example-2.png",
-      "/images/pixel-example-3.png",
-    ],
+    coverImage: ImageUrls.styleImage("Pixel Art", "pixel"),
+    examples: ImageUrls.styleExamples("Pixel Art", "pixel", 4),
     stats: {
       likes: 1089,
       generations: 4890,
@@ -791,7 +774,7 @@ const popularStyles = [
     creator: {
       handle: "@neonartist",
     },
-    coverImage: "/images/cyberpunk-neon.png",
+    coverImage: ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
     stats: {
       generations: 5621,
     },
@@ -802,7 +785,7 @@ const popularStyles = [
     creator: {
       handle: "@pixelmaster",
     },
-    coverImage: "/images/pixel-art.png",
+    coverImage: ImageUrls.styleImage("Pixel Art", "pixel"),
     stats: {
       generations: 4890,
     },
@@ -813,7 +796,7 @@ const popularStyles = [
     creator: {
       handle: "@retrovisuals",
     },
-    coverImage: "/images/vintage-film.png",
+    coverImage: ImageUrls.styleImage("Vintage Film", "vintage"),
     stats: {
       generations: 4210,
     },
@@ -824,7 +807,7 @@ const popularStyles = [
     creator: {
       handle: "@watercolorist",
     },
-    coverImage: "/images/watercolor.png",
+    coverImage: ImageUrls.styleImage("Watercolor Dreams", "watercolor"),
     stats: {
       generations: 3850,
     },
@@ -835,7 +818,7 @@ const popularStyles = [
     creator: {
       handle: "@wavecreator",
     },
-    coverImage: "/images/abstract-waves.png",
+    coverImage: ImageUrls.styleImage("Abstract Waves", "abstract"),
     stats: {
       generations: 3150,
     },

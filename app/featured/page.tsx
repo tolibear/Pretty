@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { ExploreLayout } from "@/components/explore-layout"
 import { Badge } from "@/components/ui/badge"
+import { ImageUrls } from "@/lib/image-service"
 
 export const metadata: Metadata = {
   title: "Featured Styles - Pretty.af",
@@ -27,17 +28,17 @@ export default function FeaturedPage() {
             </p>
             <div className="grid grid-cols-3 gap-2">
               <img
-                src="/images/watercolor.png"
+                src={ImageUrls.styleImage("Watercolor Dreams", "watercolor")}
                 alt="Watercolor example 1"
                 className="rounded-md aspect-square object-cover"
               />
               <img
-                src="/images/watercolor-example-1.png"
+                src={ImageUrls.styleExamples("Watercolor Dreams", "watercolor", 3)[1]}
                 alt="Watercolor example 2"
                 className="rounded-md aspect-square object-cover"
               />
               <img
-                src="/images/watercolor-example-2.png"
+                src={ImageUrls.styleExamples("Watercolor Dreams", "watercolor", 3)[2]}
                 alt="Watercolor example 3"
                 className="rounded-md aspect-square object-cover"
               />
@@ -46,13 +47,13 @@ export default function FeaturedPage() {
           <div className="md:w-1/2 flex items-center justify-center">
             <div className="relative aspect-square w-full max-w-[300px]">
               <img
-                src="/images/watercolor.png"
+                src={ImageUrls.styleImage("Watercolor Dreams", "watercolor")}
                 alt="Featured style"
                 className="rounded-xl object-cover w-full h-full shadow-lg"
               />
               <div className="absolute -bottom-4 -right-4 bg-background rounded-full p-2 shadow-lg">
                 <img
-                  src="/images/avatar-5.png"
+                  src={ImageUrls.creatorAvatar("watercolorist")}
                   alt="Creator avatar"
                   className="w-16 h-16 rounded-full border-4 border-background"
                 />
@@ -72,62 +73,62 @@ const featuredStyles = [
     title: "Watercolor Dreams",
     creator: "@watercolorist",
     likes: 876,
-    coverImage: "/images/watercolor.png",
+    coverImage: ImageUrls.styleImage("Watercolor Dreams", "watercolor"),
   },
   {
     id: "4",
     title: "Pixel Art",
     creator: "@pixelmaster",
     likes: 1089,
-    coverImage: "/images/pixel-art.png",
+    coverImage: ImageUrls.styleImage("Pixel Art", "pixel"),
   },
   {
     id: "6",
     title: "Sci-Fi Worlds",
     creator: "@futurevisions",
     likes: 654,
-    coverImage: "/images/scifi-world.png",
+    coverImage: ImageUrls.styleImage("Sci-Fi Worlds", "scifi"),
   },
   {
     id: "1",
     title: "Neon Dreams",
     creator: "@neonartist",
     likes: 1243,
-    coverImage: "/images/cyberpunk-neon.png",
+    coverImage: ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
   },
   {
     id: "2",
     title: "Vintage Film",
     creator: "@retrovisuals",
     likes: 982,
-    coverImage: "/images/vintage-film.png",
+    coverImage: ImageUrls.styleImage("Vintage Film", "vintage"),
   },
   {
     id: "9",
     title: "Surreal Dreams",
     creator: "@surrealartist",
     likes: 543,
-    coverImage: "/images/surreal-dream.png",
+    coverImage: ImageUrls.styleImage("Surreal Dreams", "fantasy"),
   },
   {
     id: "3",
     title: "Abstract Waves",
     creator: "@wavecreator",
     likes: 756,
-    coverImage: "/images/abstract-waves.png",
+    coverImage: ImageUrls.styleImage("Abstract Waves", "abstract"),
   },
   {
     id: "7",
     title: "Anime Portraits",
     creator: "@animefan",
     likes: 432,
-    coverImage: "/images/anime-portrait.png",
+    coverImage: ImageUrls.styleImage("Anime Portraits", "anime"),
   },
   {
     id: "8",
     title: "Minimal Lines",
     creator: "@minimalist",
     likes: 321,
-    coverImage: "/images/minimal-lines.png",
+    coverImage: ImageUrls.styleImage("Minimal Lines", "minimal"),
   },
 ]

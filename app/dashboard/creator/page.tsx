@@ -1,21 +1,21 @@
 import type { Metadata } from "next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { UserDashboard } from "@/components/user/user-dashboard"
+import { CreatorDashboard } from "@/components/creator-dashboard"
 
 export const metadata: Metadata = {
-  title: "Dashboard - Pretty.af",
-  description: "Manage your collections, generations, and activity on Pretty.af",
+  title: "Creator Dashboard - Pretty.af",
+  description: "Track your earnings, styles, and analytics as a creator on Pretty.af",
 }
 
-export default function DashboardPage() {
+export default function CreatorDashboardPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SiteHeader />
       <main className="flex-1">
-        <UserDashboard />
+        <CreatorDashboard />
       </main>
       <SiteFooter />
     </div>
   )
-}
+} 

@@ -3,6 +3,7 @@ import { ExploreLayout } from "@/components/explore-layout"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Clock } from "lucide-react"
+import { ImageUrls } from "@/lib/image-service"
 
 export const metadata: Metadata = {
   title: "New Arrivals - Pretty.af",
@@ -25,7 +26,7 @@ export default function NewArrivalsPage() {
               <div className="flex flex-col md:flex-row">
                 <div className="md:w-1/3 aspect-square md:aspect-auto">
                   <img
-                    src={style.coverImage || "/placeholder.svg"}
+                    src={style.coverImage || ImageUrls.placeholder(400, 400, style.title)}
                     alt={style.title}
                     className="w-full h-full object-cover"
                   />
@@ -59,7 +60,7 @@ const newStyles = [
     title: "Dreamy Pastels",
     creator: "@pastelartist",
     likes: 124,
-    coverImage: "/images/surreal-dream.png",
+    coverImage: ImageUrls.styleImage("Dreamy Pastels", "watercolor"),
     addedTime: "2 hours ago",
   },
   {
@@ -67,7 +68,7 @@ const newStyles = [
     title: "Geometric Patterns",
     creator: "@geometrymaster",
     likes: 98,
-    coverImage: "/images/abstract-waves.png",
+    coverImage: ImageUrls.styleImage("Geometric Patterns", "geometric"),
     addedTime: "5 hours ago",
   },
   {
@@ -75,7 +76,7 @@ const newStyles = [
     title: "Anime Portraits",
     creator: "@animefan",
     likes: 432,
-    coverImage: "/images/anime-portrait.png",
+    coverImage: ImageUrls.styleImage("Anime Portraits", "anime"),
     addedTime: "1 day ago",
   },
   {
@@ -83,7 +84,7 @@ const newStyles = [
     title: "Charcoal Sketches",
     creator: "@sketchartist",
     likes: 76,
-    coverImage: "/images/minimal-lines.png",
+    coverImage: ImageUrls.styleImage("Charcoal Sketches", "portrait"),
     addedTime: "1 day ago",
   },
   {
@@ -91,7 +92,7 @@ const newStyles = [
     title: "Glitch Art",
     creator: "@glitchmaster",
     likes: 210,
-    coverImage: "/images/cyberpunk-neon.png",
+    coverImage: ImageUrls.styleImage("Glitch Art", "cyberpunk"),
     addedTime: "2 days ago",
   },
   {
@@ -99,7 +100,7 @@ const newStyles = [
     title: "Minimal Lines",
     creator: "@minimalist",
     likes: 321,
-    coverImage: "/images/minimal-lines.png",
+    coverImage: ImageUrls.styleImage("Minimal Lines", "minimal"),
     addedTime: "2 days ago",
   },
   {
@@ -107,7 +108,7 @@ const newStyles = [
     title: "Retro Gaming",
     creator: "@retrogamer",
     likes: 187,
-    coverImage: "/images/pixel-art.png",
+    coverImage: ImageUrls.styleImage("Retro Gaming", "pixel"),
     addedTime: "3 days ago",
   },
   {
@@ -115,7 +116,7 @@ const newStyles = [
     title: "Cinematic Frames",
     creator: "@filmmaker",
     likes: 243,
-    coverImage: "/images/vintage-film.png",
+    coverImage: ImageUrls.styleImage("Cinematic Frames", "vintage"),
     addedTime: "3 days ago",
   },
   {
@@ -123,7 +124,7 @@ const newStyles = [
     title: "Surreal Dreams",
     creator: "@surrealartist",
     likes: 543,
-    coverImage: "/images/surreal-dream.png",
+    coverImage: ImageUrls.styleImage("Surreal Dreams", "fantasy"),
     addedTime: "4 days ago",
   },
 ]

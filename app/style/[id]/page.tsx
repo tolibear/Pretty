@@ -2,16 +2,18 @@ import type { Metadata } from "next"
 import { StyleDetail } from "@/components/style-detail"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { ImageUrls } from "@/lib/image-service"
 
 interface StylePageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: StylePageProps): Promise<Metadata> {
   // In a real app, fetch the style data from an API
-  const style = styles.find((s) => s.id === params.id) || styles[0]
+  const { id } = await params
+  const style = styles.find((s) => s.id === id) || styles[0]
 
   if (!style) {
     return {
@@ -45,9 +47,10 @@ export async function generateMetadata({ params }: StylePageProps): Promise<Meta
   }
 }
 
-export default function StylePage({ params }: StylePageProps) {
+export default async function StylePage({ params }: StylePageProps) {
   // In a real app, fetch the style data from an API
-  const style = styles.find((s) => s.id === params.id) || styles[0]
+  const { id } = await params
+  const style = styles.find((s) => s.id === id) || styles[0]
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -70,17 +73,13 @@ const styles = [
     creator: {
       name: "Alex Rivera",
       handle: "@neonartist",
-      avatar: "/images/avatar-1.png",
+      avatar: ImageUrls.creatorAvatar("neonartist"),
       verified: true,
     },
-    coverImage: "/images/cyberpunk-neon.png",
+    coverImage: ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
     examples: [
-      "/images/cyberpunk-neon.png",
-      "/images/cyberpunk-example-1.png",
-      "/images/cyberpunk-example-2.png",
-      "/images/cyberpunk-example-3.png",
-      "/images/cyberpunk-example-4.png",
-      "/images/cyberpunk-example-5.png",
+      ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
+      ...ImageUrls.styleExamples("Neon Dreams", "cyberpunk", 5),
     ],
     stats: {
       likes: 1243,

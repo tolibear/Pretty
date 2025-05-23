@@ -2,13 +2,14 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle2 } from "lucide-react"
+import { ImageUrls } from "@/lib/image-service"
 
 export function DashboardHeader() {
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
       <div className="flex items-center">
         <Avatar className="h-12 w-12 mr-4">
-          <AvatarImage src="/images/avatar-1.png" alt="Alex Rivera" />
+          <AvatarImage src={ImageUrls.creatorAvatar("alexrivera")} alt="Alex Rivera" />
           <AvatarFallback>AR</AvatarFallback>
         </Avatar>
         <div>

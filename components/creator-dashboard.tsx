@@ -14,6 +14,7 @@ import { AnalyticsCharts } from "@/components/analytics-charts"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, Plus } from "lucide-react"
 import Link from "next/link"
+import { ImageUrls } from "@/lib/image-service"
 
 export function CreatorDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
@@ -470,7 +471,7 @@ const topStyles = [
   {
     id: "1",
     title: "Neon Dreams",
-    coverImage: "/images/cyberpunk-neon.png",
+    coverImage: ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
     generations: 1243,
     revenue: 1250.45,
     trend: 12,
@@ -478,7 +479,7 @@ const topStyles = [
   {
     id: "2",
     title: "Vintage Film",
-    coverImage: "/images/vintage-film.png",
+    coverImage: ImageUrls.styleImage("Vintage Film", "vintage"),
     generations: 982,
     revenue: 980.2,
     trend: 8,
@@ -486,7 +487,7 @@ const topStyles = [
   {
     id: "3",
     title: "Abstract Waves",
-    coverImage: "/images/abstract-waves.png",
+    coverImage: ImageUrls.styleImage("Abstract Waves", "abstract"),
     generations: 756,
     revenue: 720.8,
     trend: -3,
@@ -494,7 +495,7 @@ const topStyles = [
   {
     id: "4",
     title: "Pixel Art",
-    coverImage: "/images/pixel-art.png",
+    coverImage: ImageUrls.styleImage("Pixel Art", "pixel"),
     generations: 1089,
     revenue: 1100.5,
     trend: 15,

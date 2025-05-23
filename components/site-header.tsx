@@ -25,6 +25,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/lib/auth-context"
+import { ImageUrls } from "@/lib/image-service"
 import React from "react"
 
 function GenerationCounter({ remaining }: { remaining: number }) {
@@ -64,6 +65,11 @@ function UserMenu() {
         <DropdownMenuItem asChild>
           <Link href="/dashboard">Dashboard</Link>
         </DropdownMenuItem>
+        {user.isCreator && (
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/creator">Creator Dashboard</Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
           <Link href="/dashboard/settings">Settings</Link>
         </DropdownMenuItem>
@@ -112,13 +118,20 @@ export function SiteHeader() {
                     <li className="row-span-3">
                       <NavigationMenuLink asChild>
                         <a
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-black/40 to-black/80 p-6 no-underline outline-none focus:shadow-md relative overflow-hidden"
                           href="/featured"
+                          style={{
+                            backgroundImage: `url(${ImageUrls.styleImage('Featured Cyberpunk Art', 'cyberpunk')})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                          }}
                         >
-                          <div className="mb-2 mt-4 text-lg font-medium">Featured Styles</div>
-                          <p className="text-sm leading-tight text-muted-foreground">
-                            Discover the most popular AI art styles from top creators.
-                          </p>
+                          <div className="relative z-10">
+                            <div className="mb-2 mt-4 text-lg font-medium text-white drop-shadow-lg">Featured Styles</div>
+                            <p className="text-sm leading-tight text-white drop-shadow-md">
+                              Discover the most popular AI art styles from top creators.
+                            </p>
+                          </div>
                         </a>
                       </NavigationMenuLink>
                     </li>
@@ -239,6 +252,11 @@ export function SiteHeader() {
                       <Link href="/dashboard" className="text-lg font-medium">
                         Dashboard
                       </Link>
+                      {user.isCreator && (
+                        <Link href="/dashboard/creator" className="text-lg font-medium">
+                          Creator Dashboard
+                        </Link>
+                      )}
                       <Link href="/dashboard/settings" className="text-lg font-medium">
                         Settings
                       </Link>

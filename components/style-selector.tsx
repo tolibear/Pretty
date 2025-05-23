@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { Heart } from "lucide-react"
+import { ImageUrls } from "@/lib/image-service"
 
 interface StyleSelectorProps {
   onStyleSelect: (style: any) => void
@@ -92,7 +93,7 @@ function StyleCard({ style, onSelect }: StyleCardProps) {
     >
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
-          src={style.coverImage || "/placeholder.svg"}
+          src={style.coverImage || ImageUrls.placeholder(400, 300, style.title)}
           alt={style.title}
           className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
         />
@@ -135,18 +136,11 @@ const styles = [
     creator: {
       name: "Alex Rivera",
       handle: "@neonartist",
-      avatar: "/images/avatar-1.png",
+      avatar: ImageUrls.creatorAvatar("neonartist"),
       verified: true,
     },
-    coverImage: "/images/cyberpunk-neon.png",
-    examples: [
-      "/images/cyberpunk-neon.png",
-      "/images/cyberpunk-example-1.png",
-      "/images/cyberpunk-example-2.png",
-      "/images/cyberpunk-example-3.png",
-      "/images/cyberpunk-example-4.png",
-      "/images/cyberpunk-example-5.png",
-    ],
+    coverImage: ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
+    examples: ImageUrls.styleExamples("Neon Dreams", "cyberpunk", 6),
     stats: {
       likes: 1243,
       generations: 5621,
@@ -176,16 +170,11 @@ const styles = [
     creator: {
       name: "Jamie Chen",
       handle: "@retrovisuals",
-      avatar: "/images/avatar-2.png",
+      avatar: ImageUrls.creatorAvatar("retrovisuals"),
       verified: true,
     },
-    coverImage: "/images/vintage-film.png",
-    examples: [
-      "/images/vintage-film.png",
-      "/images/vintage-example-1.png",
-      "/images/vintage-example-2.png",
-      "/images/vintage-example-3.png",
-    ],
+    coverImage: ImageUrls.styleImage("Vintage Film", "vintage"),
+    examples: ImageUrls.styleExamples("Vintage Film", "vintage", 4),
     stats: {
       likes: 982,
       generations: 4210,
@@ -214,16 +203,11 @@ const styles = [
     creator: {
       name: "Sam Wilson",
       handle: "@wavecreator",
-      avatar: "/images/avatar-3.png",
+      avatar: ImageUrls.creatorAvatar("wavecreator"),
       verified: false,
     },
-    coverImage: "/images/abstract-waves.png",
-    examples: [
-      "/images/abstract-waves.png",
-      "/images/abstract-example-1.png",
-      "/images/abstract-example-2.png",
-      "/images/abstract-example-3.png",
-    ],
+    coverImage: ImageUrls.styleImage("Abstract Waves", "abstract"),
+    examples: ImageUrls.styleExamples("Abstract Waves", "abstract", 4),
     stats: {
       likes: 756,
       generations: 3150,
@@ -252,16 +236,11 @@ const styles = [
     creator: {
       name: "Taylor Kim",
       handle: "@pixelmaster",
-      avatar: "/images/avatar-4.png",
+      avatar: ImageUrls.creatorAvatar("pixelmaster"),
       verified: true,
     },
-    coverImage: "/images/pixel-art.png",
-    examples: [
-      "/images/pixel-art.png",
-      "/images/pixel-example-1.png",
-      "/images/pixel-example-2.png",
-      "/images/pixel-example-3.png",
-    ],
+    coverImage: ImageUrls.styleImage("Pixel Art", "pixel"),
+    examples: ImageUrls.styleExamples("Pixel Art", "pixel", 4),
     stats: {
       likes: 1089,
       generations: 4890,
@@ -291,16 +270,11 @@ const styles = [
     creator: {
       name: "Jordan Lee",
       handle: "@watercolorist",
-      avatar: "/images/avatar-5.png",
+      avatar: ImageUrls.creatorAvatar("watercolorist"),
       verified: true,
     },
-    coverImage: "/images/watercolor.png",
-    examples: [
-      "/images/watercolor.png",
-      "/images/watercolor-example-1.png",
-      "/images/watercolor-example-2.png",
-      "/images/watercolor-example-3.png",
-    ],
+    coverImage: ImageUrls.styleImage("Watercolor Dreams", "watercolor"),
+    examples: ImageUrls.styleExamples("Watercolor Dreams", "watercolor", 4),
     stats: {
       likes: 876,
       generations: 3850,
@@ -329,16 +303,11 @@ const styles = [
     creator: {
       name: "Morgan Chen",
       handle: "@futurevisions",
-      avatar: "/images/avatar-6.png",
+      avatar: ImageUrls.creatorAvatar("futurevisions"),
       verified: false,
     },
-    coverImage: "/images/scifi-world.png",
-    examples: [
-      "/images/scifi-world.png",
-      "/images/scifi-example-1.png",
-      "/images/scifi-example-2.png",
-      "/images/scifi-example-3.png",
-    ],
+    coverImage: ImageUrls.styleImage("Sci-Fi Worlds", "scifi"),
+    examples: ImageUrls.styleExamples("Sci-Fi Worlds", "scifi", 4),
     stats: {
       likes: 654,
       generations: 2950,

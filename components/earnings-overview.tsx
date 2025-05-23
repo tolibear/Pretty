@@ -32,13 +32,17 @@ export function EarningsOverview() {
         />
         <Tooltip
           content={({ active, payload }) => {
-            if (active && payload && payload.length) {
+            if (active && payload && payload.length >= 3) {
+              const usdcValue = typeof payload[0]?.value === 'number' ? payload[0].value : 0
+              const ethValue = typeof payload[1]?.value === 'number' ? payload[1].value : 0
+              const penguValue = typeof payload[2]?.value === 'number' ? payload[2].value : 0
+              
               return (
                 <Card className="p-2 border shadow-sm">
-                  <div className="text-sm font-medium">{payload[0].payload.name}</div>
-                  <div className="text-xs text-muted-foreground">USDC: ${payload[0].value.toFixed(2)}</div>
-                  <div className="text-xs text-muted-foreground">ETH: ${payload[1].value.toFixed(2)}</div>
-                  <div className="text-xs text-muted-foreground">PENGU: ${payload[2].value.toFixed(2)}</div>
+                  <div className="text-sm font-medium">{payload[0]?.payload?.name}</div>
+                  <div className="text-xs text-muted-foreground">USDC: ${usdcValue.toFixed(2)}</div>
+                  <div className="text-xs text-muted-foreground">ETH: ${ethValue.toFixed(2)}</div>
+                  <div className="text-xs text-muted-foreground">PENGU: ${penguValue.toFixed(2)}</div>
                 </Card>
               )
             }

@@ -1,6 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import { ImageUrls } from './image-service'
 
 interface User {
   id: string
@@ -73,7 +74,7 @@ const mockUsers = {
     username: 'neonartist',
     displayName: 'Neon Artist',
     bio: 'Creating cyberpunk art styles',
-    avatarUrl: '/mock-images/creator-avatar.jpg',
+    avatarUrl: ImageUrls.creatorAvatar('alexrivera'),
     socialAccounts: { twitter: '@neonartist' },
     freeGenerationsRemaining: 0,
     totalGenerations: 156,

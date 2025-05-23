@@ -15,16 +15,20 @@ import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { Slider } from "@/components/ui/slider"
 import { Badge } from "@/components/ui/badge"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { toast } from "@/components/ui/use-toast"
 import { StyleSelector } from "@/components/style-selector"
 import { GenerationHistory } from "@/components/generation-history"
 import { GenerationProcess } from "@/components/generation-process"
 import { ImageViewer } from "@/components/image-viewer"
+import { FreeGenerationsTracker } from "@/components/user/free-generations-tracker"
+import { ImageUrls } from "@/lib/image-service"
 import {
   AlertCircle,
   Download,
   Heart,
   ImageIcon,
+  Info,
   Loader2,
   MessageSquare,
   RefreshCw,
@@ -33,7 +37,6 @@ import {
   Upload,
   Wand2,
 } from "lucide-react"
-import { FreeGenerationsTracker } from "@/components/user/free-generations-tracker"
 
 export function PlaygroundContent() {
   const router = useRouter()
@@ -133,8 +136,8 @@ export function PlaygroundContent() {
 
     // Simulate creation process
     setTimeout(() => {
-      // For demo purposes, we'll use a random image from our examples
-      const madeResult = "/images/generated-result.png"
+      // For demo purposes, we'll use a generated image based on the prompt and style
+      const madeResult = ImageUrls.generationResult(prompt, selectedStyle.title.toLowerCase(), aspectRatio, "premium")
       setMadeImage(madeResult)
       setIsMaking(false)
 
@@ -234,7 +237,7 @@ export function PlaygroundContent() {
                     <CardContent>
                       <div className="flex items-center gap-4">
                         <img
-                          src={selectedStyle.coverImage || "/placeholder.svg"}
+                          src={selectedStyle.coverImage || ImageUrls.placeholder(80, 80, selectedStyle.title)}
                           alt={selectedStyle.title}
                           className="w-20 h-20 object-cover rounded-md"
                         />
@@ -332,7 +335,7 @@ export function PlaygroundContent() {
                             ) : (
                               <div className="mt-1.5 relative">
                                 <img
-                                  src={referenceImage || "/placeholder.svg"}
+                                  src={referenceImage || ImageUrls.placeholder(400, 160, "Reference Image")}
                                   alt="Reference"
                                   className="w-full h-40 object-contain rounded-lg border border-border"
                                 />
@@ -464,7 +467,7 @@ export function PlaygroundContent() {
                       <CardContent>
                         <div className="relative aspect-square overflow-hidden rounded-lg border border-border">
                           <img
-                            src={madeImage || "/placeholder.svg"}
+                            src={madeImage || ImageUrls.placeholder(400, 400, "Generated Image")}
                             alt="Made image"
                             className="object-contain w-full h-full"
                           />
@@ -599,7 +602,7 @@ export function PlaygroundContent() {
                     onClick={() => handleStyleSelect(style)}
                   >
                     <img
-                      src={style.coverImage || "/placeholder.svg"}
+                      src={style.coverImage || ImageUrls.placeholder(48, 48, style.title)}
                       alt={style.title}
                       className="w-12 h-12 rounded-md object-cover"
                     />
@@ -640,18 +643,11 @@ const styles = [
     creator: {
       name: "Alex Rivera",
       handle: "@neonartist",
-      avatar: "/images/avatar-1.png",
+      avatar: ImageUrls.creatorAvatar("neonartist"),
       verified: true,
     },
-    coverImage: "/images/cyberpunk-neon.png",
-    examples: [
-      "/images/cyberpunk-neon.png",
-      "/images/cyberpunk-example-1.png",
-      "/images/cyberpunk-example-2.png",
-      "/images/cyberpunk-example-3.png",
-      "/images/cyberpunk-example-4.png",
-      "/images/cyberpunk-example-5.png",
-    ],
+    coverImage: ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
+    examples: ImageUrls.styleExamples("Neon Dreams", "cyberpunk", 6),
     stats: {
       likes: 1243,
       creations: 5621,
@@ -681,16 +677,11 @@ const styles = [
     creator: {
       name: "Jamie Chen",
       handle: "@retrovisuals",
-      avatar: "/images/avatar-2.png",
+      avatar: ImageUrls.creatorAvatar("retrovisuals"),
       verified: true,
     },
-    coverImage: "/images/vintage-film.png",
-    examples: [
-      "/images/vintage-film.png",
-      "/images/vintage-example-1.png",
-      "/images/vintage-example-2.png",
-      "/images/vintage-example-3.png",
-    ],
+    coverImage: ImageUrls.styleImage("Vintage Film", "vintage"),
+    examples: ImageUrls.styleExamples("Vintage Film", "vintage", 4),
     stats: {
       likes: 982,
       creations: 4210,
@@ -719,16 +710,11 @@ const styles = [
     creator: {
       name: "Sam Wilson",
       handle: "@wavecreator",
-      avatar: "/images/avatar-3.png",
+      avatar: ImageUrls.creatorAvatar("wavecreator"),
       verified: false,
     },
-    coverImage: "/images/abstract-waves.png",
-    examples: [
-      "/images/abstract-waves.png",
-      "/images/abstract-example-1.png",
-      "/images/abstract-example-2.png",
-      "/images/abstract-example-3.png",
-    ],
+    coverImage: ImageUrls.styleImage("Abstract Waves", "abstract"),
+    examples: ImageUrls.styleExamples("Abstract Waves", "abstract", 4),
     stats: {
       likes: 756,
       creations: 3150,
@@ -757,16 +743,11 @@ const styles = [
     creator: {
       name: "Taylor Kim",
       handle: "@pixelmaster",
-      avatar: "/images/avatar-4.png",
+      avatar: ImageUrls.creatorAvatar("pixelmaster"),
       verified: true,
     },
-    coverImage: "/images/pixel-art.png",
-    examples: [
-      "/images/pixel-art.png",
-      "/images/pixel-example-1.png",
-      "/images/pixel-example-2.png",
-      "/images/pixel-example-3.png",
-    ],
+    coverImage: ImageUrls.styleImage("Pixel Art", "pixel"),
+    examples: ImageUrls.styleExamples("Pixel Art", "pixel", 4),
     stats: {
       likes: 1089,
       creations: 4890,
@@ -797,7 +778,7 @@ const popularStyles = [
     creator: {
       handle: "@neonartist",
     },
-    coverImage: "/images/cyberpunk-neon.png",
+    coverImage: ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
     stats: {
       creations: 5621,
     },
@@ -808,7 +789,7 @@ const popularStyles = [
     creator: {
       handle: "@pixelmaster",
     },
-    coverImage: "/images/pixel-art.png",
+    coverImage: ImageUrls.styleImage("Pixel Art", "pixel"),
     stats: {
       creations: 4890,
     },
@@ -819,7 +800,7 @@ const popularStyles = [
     creator: {
       handle: "@retrovisuals",
     },
-    coverImage: "/images/vintage-film.png",
+    coverImage: ImageUrls.styleImage("Vintage Film", "vintage"),
     stats: {
       creations: 4210,
     },
@@ -830,7 +811,7 @@ const popularStyles = [
     creator: {
       handle: "@watercolorist",
     },
-    coverImage: "/images/watercolor.png",
+    coverImage: ImageUrls.styleImage("Watercolor Dreams", "watercolor"),
     stats: {
       creations: 3850,
     },
@@ -841,7 +822,7 @@ const popularStyles = [
     creator: {
       handle: "@wavecreator",
     },
-    coverImage: "/images/abstract-waves.png",
+    coverImage: ImageUrls.styleImage("Abstract Waves", "abstract"),
     stats: {
       creations: 3150,
     },

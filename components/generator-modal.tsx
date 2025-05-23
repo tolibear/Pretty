@@ -7,6 +7,9 @@ import { Progress } from "@/components/ui/progress"
 import { Loader2, AlertCircle, CheckCircle } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { ImageViewer } from "@/components/image-viewer"
+import { ImageUrls } from "@/lib/image-service"
+
+type GenerationStatus = "initializing" | "queued" | "making" | "completed" | "error"
 
 interface GeneratorModalProps {
   isOpen: boolean
@@ -16,7 +19,7 @@ interface GeneratorModalProps {
 
 export function GeneratorModal({ isOpen, onClose, style }: GeneratorModalProps) {
   const [progress, setProgress] = useState(0)
-  const [status, setStatus] = useState<"initializing" | "queued" | "making" | "completed" | "error">("initializing")
+  const [status, setStatus] = useState<GenerationStatus>("initializing")
   const [generatedImage, setGeneratedImage] = useState<string | null>(null)
   const [showImageViewer, setShowImageViewer] = useState(false)
 
@@ -55,7 +58,7 @@ export function GeneratorModal({ isOpen, onClose, style }: GeneratorModalProps) 
             clearInterval(interval)
             setProgress(100)
             setStatus("completed")
-            setGeneratedImage("/images/generated-result.png")
+            setGeneratedImage(ImageUrls.generationResult("cyberpunk cityscape", "cyberpunk", "1:1", "premium"))
           }, 5000)
         }, 1500)
       }, 1000)
@@ -129,7 +132,7 @@ export function GeneratorModal({ isOpen, onClose, style }: GeneratorModalProps) 
                       )}
                       <span className="font-medium">{getStatusMessage()}</span>
                     </div>
-                    {status !== "completed" && status !== "error" && (
+                    {(status === "initializing" || status === "queued" || status === "making") && (
                       <span className="text-sm text-muted-foreground">{getEstimatedTime()}</span>
                     )}
                   </div>
