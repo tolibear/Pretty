@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
+import { useAuth } from "@/lib/auth-context"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -25,6 +26,7 @@ const formSchema = z.object({
 
 export function SignUpForm() {
   const router = useRouter()
+  const { register } = useAuth()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,18 +41,25 @@ export function SignUpForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      await register(values.name, values.email, values.password)
+      
+      toast({
+        title: "Welcome to Pretty.af!",
+        description: "Your account has been created successfully.",
+      })
 
-    setIsLoading(false)
-
-    toast({
-      title: "Account created!",
-      description: "We've created your account for you.",
-    })
-
-    // Redirect to verification page
-    router.push("/verify-email")
+      // Redirect to dashboard (skip email verification for demo)
+      router.push("/dashboard")
+    } catch (error) {
+      toast({
+        title: "Registration failed",
+        description: "Please check your information and try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -61,9 +70,13 @@ export function SignUpForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your name" {...field} />
+                <Input 
+                  placeholder="Enter your full name" 
+                  className="h-11"
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -76,7 +89,13 @@ export function SignUpForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="name@example.com" {...field} />
+                <Input 
+                  placeholder="name@example.com" 
+                  type="email"
+                  autoComplete="email"
+                  className="h-11"
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -89,34 +108,27 @@ export function SignUpForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Create a password" {...field} />
+                <Input 
+                  type="password" 
+                  placeholder="Create a password"
+                  autoComplete="new-password"
+                  className="h-11"
+                  {...field} 
+                />
               </FormControl>
               <FormDescription>At least 8 characters</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <Button type="submit" className="w-full h-11" disabled={isLoading}>
           {isLoading ? (
             <>
-              <svg
-                className="mr-2 h-4 w-4 animate-spin"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-              </svg>
+              <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
               Creating account...
             </>
           ) : (
-            "Create account"
+            "Create Account"
           )}
         </Button>
       </form>

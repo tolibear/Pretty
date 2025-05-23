@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { Suspense } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -25,7 +26,7 @@ const formSchema = z
     path: ["confirmPassword"],
   })
 
-export function ResetPasswordForm() {
+function ResetPasswordFormContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
@@ -75,7 +76,7 @@ export function ResetPasswordForm() {
             <FormItem>
               <FormLabel>New Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Enter your new password" {...field} />
+                <Input type="password" placeholder="Enter your new password" className="h-11" {...field} />
               </FormControl>
               <FormDescription>At least 8 characters</FormDescription>
               <FormMessage />
@@ -89,29 +90,16 @@ export function ResetPasswordForm() {
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Confirm your new password" {...field} />
+                <Input type="password" placeholder="Confirm your new password" className="h-11" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <Button type="submit" className="w-full h-11" disabled={isLoading}>
           {isLoading ? (
             <>
-              <svg
-                className="mr-2 h-4 w-4 animate-spin"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-              </svg>
+              <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
               Resetting password...
             </>
           ) : (
@@ -120,5 +108,13 @@ export function ResetPasswordForm() {
         </Button>
       </form>
     </Form>
+  )
+}
+
+export function ResetPasswordForm() {
+  return (
+    <Suspense fallback={<div className="flex justify-center p-4">Loading...</div>}>
+      <ResetPasswordFormContent />
+    </Suspense>
   )
 }

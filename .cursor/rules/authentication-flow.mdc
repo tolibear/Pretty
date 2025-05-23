@@ -1,0 +1,122 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Authentication UI Flow Rules (Frontend Only)
+
+## Authentication UI Priority (CRITICAL)
+1. **X (Twitter) OAuth** - PRIMARY, large prominent blue button
+2. **Google OAuth** - SECONDARY, medium white button with Google logo
+3. **Email + Password** - FALLBACK, small text link
+
+## Frontend Implementation Strategy
+- **UI Library**: Use ShadCN components for consistent design
+- **Social First**: Prominent social login buttons
+- **Progressive**: Wallet connection UI only appears when needed
+- **Mock Integration**: Use placeholder auth for frontend development
+
+## User Registration UI Flow
+```
+Landing Page → Auth Modal → Method Selection → Success State → Dashboard
+```
+
+### X (Twitter) Registration UI (PRIMARY)
+- **Button Design**: Large, prominent blue button with X logo
+- **Text**: "Continue with X" or "Sign up with X"
+- **Placement**: Top position, most visual weight
+- **Hover State**: Darker blue with smooth transition
+- **Loading State**: Spinner with "Connecting to X..."
+
+### Google Registration UI (SECONDARY)
+- **Button Design**: Medium white button with Google logo
+- **Text**: "Continue with Google"
+- **Placement**: Second position, medium visual weight
+- **Hover State**: Light gray background
+- **Loading State**: Spinner with "Connecting to Google..."
+
+### Email Registration UI (FALLBACK)
+- **Button Design**: Small text link, minimal styling
+- **Text**: "Sign up with email" or "Use email instead"
+- **Placement**: Bottom, least prominent
+- **Form**: Expandable form with email, password, display name
+- **Validation**: Real-time validation with error states
+
+## Login UI Flow
+- **Same priority order**: X/Twitter → Google → Email
+- **Modal Design**: Clean, centered modal with Pretty.af branding
+- **Mobile Responsive**: Touch-optimized buttons for mobile
+- **Error Handling**: Clear error messages for failed attempts
+
+## Wallet Connection UI (Progressive)
+- **Trigger**: Only show after 5 free generations exhausted
+- **Modal**: "Continue Generating" modal with wallet options
+- **Wallet Options**: MetaMask, WalletConnect with clear icons
+- **Messaging**: "Connect wallet to continue generating images"
+
+## Free Generation UI System
+- **Counter Display**: Prominent counter in header "3 generations left"
+- **Progress Bar**: Visual progress bar showing usage
+- **Upgrade Prompt**: Friendly prompt when approaching limit
+- **Zero State**: Clear upgrade modal when exhausted
+
+## Authentication Page Structure
+- [app/(auth)/login/page.tsx](mdc:app/(auth)/login/page.tsx) - Login page UI
+- [app/(auth)/sign-up/page.tsx](mdc:app/(auth)/sign-up/page.tsx) - Registration page UI
+- [app/(auth)/layout.tsx](mdc:app/(auth)/layout.tsx) - Auth layout wrapper
+
+## UI Component Requirements
+```tsx
+// Example button hierarchy
+<div className="space-y-4">
+  {/* PRIMARY - X/Twitter */}
+  <Button size="lg" className="w-full bg-blue-500 hover:bg-blue-600">
+    <XIcon className="mr-2" />
+    Continue with X
+  </Button>
+  
+  {/* SECONDARY - Google */}
+  <Button size="md" variant="outline" className="w-full">
+    <GoogleIcon className="mr-2" />
+    Continue with Google
+  </Button>
+  
+  {/* FALLBACK - Email */}
+  <Button variant="link" size="sm" className="text-muted-foreground">
+    Sign up with email
+  </Button>
+</div>
+```
+
+## Mobile UI Guidelines
+- **Touch Targets**: Minimum 44px height for buttons
+- **Spacing**: Adequate spacing between options
+- **Keyboard**: Proper keyboard navigation support
+- **Accessibility**: Screen reader friendly labels
+
+## Design System Integration
+- **Colors**: Use Pretty.af brand colors for primary actions
+- **Typography**: Consistent font weights and sizes
+- **Spacing**: Follow design system spacing scale
+- **Icons**: Use Lucide React icons for consistency
+
+## Mock Data for Development
+```typescript
+// Mock user data structure
+interface User {
+  id: string
+  email: string
+  username: string
+  displayName: string
+  avatarUrl: string
+  provider: 'twitter' | 'google' | 'email'
+  freeGenerationsRemaining: number
+  isCreator: boolean
+}
+```
+
+## Backend Integration Points
+- **OAuth Callbacks**: Document expected callback URLs
+- **Session Management**: Define session data structure
+- **Error Handling**: Specify error response formats
+- **User Profile**: Define user data requirements

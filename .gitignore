@@ -55,6 +55,3 @@ pids
 
 # Optional eslint cache
 .eslintcache
-
-# Cursor AI
-.cursor/ 

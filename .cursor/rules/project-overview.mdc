@@ -1,0 +1,51 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Pretty.af Project Overview (Frontend Focus)
+
+## Project Identity
+- **Name**: Pretty.af - AI-Powered Image Generation Marketplace
+- **Domain**: pretty.af
+- **Development Scope**: Frontend & UX/UI Design ONLY
+- **Current Status**: Rebranding from "Makely" to "Pretty.af" (v0 foundation)
+
+## Frontend Architecture
+- **Framework**: Next.js 15.2.4 with App Router
+- **React**: 19 (latest)
+- **Styling**: Tailwind CSS + ShadCN UI components
+- **Package Manager**: pnpm (always use pnpm, never npm or yarn)
+- **Backend**: Will be handled by separate backend developer
+
+## User Types & Frontend Considerations
+- **Visitors**: Unauthenticated browsing experience
+- **Users**: Authenticated UI with generation counter (5 free)
+- **Creators**: Creator dashboard and analytics UI (42% revenue display)
+- **Admins**: Admin interface components
+
+## Authentication UI Strategy (CRITICAL)
+- **PRIMARY**: X (Twitter) OAuth (most prominent button)
+- **SECONDARY**: Google OAuth (medium button)
+- **FALLBACK**: Email + password (small link)
+- **Philosophy**: Social-first UI, wallet connection UI only when necessary
+
+## Frontend Development Principles
+1. **Mobile-first responsive design**
+2. **Accessibility with Radix UI components**
+3. **Performance optimization (< 2s page loads)**
+4. **Social-first user experience**
+5. **Progressive enhancement (wallet UI optional initially)**
+
+## Key Frontend Files to Reference
+- [README.md](mdc:README.md) - Complete project documentation
+- [.cursor/scratchpad.md](mdc:.cursor/scratchpad.md) - Frontend development status
+- [package.json](mdc:package.json) - Dependencies and scripts
+- [app/page.tsx](mdc:app/page.tsx) - Homepage implementation
+- [components/](mdc:components) - UI component library
+
+## Backend Handoff Strategy
+- **Mock Data**: Use placeholder data for all components
+- **API Contracts**: Document expected data structures
+- **Integration Points**: Clearly mark where backend connects
+- **Type Definitions**: Create TypeScript interfaces for backend data

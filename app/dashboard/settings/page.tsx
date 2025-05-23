@@ -1,21 +1,21 @@
 import type { Metadata } from "next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { StyleExplorer } from "@/components/style/style-explorer"
+import { UserSettings } from "@/components/user/user-settings"
 
 export const metadata: Metadata = {
-  title: "Explore Styles - Pretty.af",
-  description: "Discover amazing AI styles created by talented artists on Pretty.af",
+  title: "Settings - Pretty.af",
+  description: "Manage your account settings and preferences on Pretty.af",
 }
 
-export default function ExplorePage() {
+export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SiteHeader />
       <main className="flex-1">
-        <StyleExplorer />
+        <UserSettings />
       </main>
       <SiteFooter />
     </div>
   )
-}
+} 

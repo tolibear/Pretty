@@ -1,0 +1,98 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Component Architecture Rules
+
+## Component Organization
+```
+components/
+├── ui/                    # ShadCN base components (don't modify)
+├── auth/                  # Authentication components
+├── user/                  # User profile & management
+├── wallet/                # Wallet integration components
+├── style/                 # Style-related components
+├── generation/            # Image generation components
+├── creator/               # Creator-specific components
+├── layout/                # Layout and navigation
+└── shared/                # Shared utility components
+```
+
+## Component Naming Conventions
+- **PascalCase**: All component files and exports
+- **Descriptive**: `StyleCard`, `CreatorDashboard`, `GenerationModal`
+- **Feature-based**: Group by functionality, not UI type
+- **Suffix patterns**: 
+  - `*Card` for card components
+  - `*Modal` for dialogs/modals
+  - `*Form` for form components
+  - `*Layout` for layout components
+
+## Component Composition Rules
+
+### Base Components (ShadCN)
+- **Never modify**: Files in `components/ui/`
+- **Compose**: Build features by combining base components
+- **Extend**: Create wrapper components for customization
+
+### Feature Components
+- **Single responsibility**: Each component has one clear purpose
+- **Composable**: Can be combined to build larger features
+- **Reusable**: Avoid hard-coding specific data
+
+### Example Component Structure
+```tsx
+// components/style/style-card.tsx
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+
+interface StyleCardProps {
+  style: Style
+  onGenerate?: (styleId: string) => void
+}
+
+export function StyleCard({ style, onGenerate }: StyleCardProps) {
+  // Component implementation
+}
+```
+
+## State Management Patterns
+- **Props down**: Pass data down through props
+- **Events up**: Use callbacks for user interactions
+- **Local state**: Use useState for component-specific state
+- **Form state**: Use React Hook Form + Zod for forms
+- **Global state**: Use React Context for app-wide state
+
+## Component Props Guidelines
+- **TypeScript**: Always use TypeScript interfaces
+- **Optional props**: Use `?` for optional properties
+- **Callbacks**: Use `on*` prefix for event handlers
+- **Children**: Use `children` prop for composition
+- **Variants**: Use union types for component variants
+
+## Accessibility Requirements
+- **Semantic HTML**: Use proper HTML elements
+- **ARIA labels**: Add labels for screen readers
+- **Keyboard navigation**: Support tab navigation
+- **Focus management**: Proper focus handling
+- **Color contrast**: Meet WCAG guidelines
+
+## Performance Guidelines
+- **Lazy loading**: Use dynamic imports for large components
+- **Memoization**: Use React.memo for expensive components
+- **Code splitting**: Split by routes and features
+- **Image optimization**: Use Next.js Image component
+
+## Key Component Files
+- [components/style-card.tsx](mdc:components/style-card.tsx) - Style display component
+- [components/creator-spotlight.tsx](mdc:components/creator-spotlight.tsx) - Creator showcase
+- [components/site-header.tsx](mdc:components/site-header.tsx) - Main navigation
+- [components/hero-section.tsx](mdc:components/hero-section.tsx) - Landing page hero
+
+## Testing Approach
+- **Unit tests**: Test component logic and rendering
+- **Integration tests**: Test component interactions
+- **Accessibility tests**: Test with screen readers
+- **Visual tests**: Test responsive design

@@ -1,0 +1,114 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Frontend Development Workflow Rules
+
+## Package Manager
+- **ALWAYS use pnpm**: Never use npm or yarn
+- **Commands**: `pnpm install`, `pnpm dev`, `pnpm build`
+- **Lock file**: Commit pnpm-lock.yaml, never package-lock.json
+
+## Git Workflow
+- **Branch naming**: `frontend/description`, `ui/description`, `fix/description`
+- **Commit messages**: Use conventional commits format
+- **Pull requests**: Required for all changes to main branch
+- **Code review**: Focus on UI/UX and component quality
+
+## Frontend Development Environment
+- **Node.js**: Version 18+ required
+- **TypeScript**: Strict mode enabled for type safety
+- **ESLint**: Fix linting errors before committing
+- **Prettier**: Auto-format on save
+- **ShadCN**: Use CLI for all component additions
+
+## Frontend Testing Strategy
+- **Component tests**: Jest + React Testing Library
+- **Visual tests**: Storybook for component documentation
+- **Accessibility tests**: axe-core for a11y compliance
+- **E2E tests**: Playwright for critical user journeys
+- **No backend tests**: Backend testing handled separately
+
+## Code Quality Standards
+- **TypeScript**: All files must be TypeScript (.tsx, .ts)
+- **Type safety**: No `any` types, use proper interfaces
+- **ESLint**: Zero linting errors allowed
+- **Prettier**: Consistent code formatting
+- **Accessibility**: WCAG 2.1 AA compliance
+- **Performance**: Optimize bundle size and loading
+
+## Mock Data Strategy
+- **Local mocks**: Use mock data for all components
+- **Type definitions**: Create interfaces for backend data
+- **Realistic data**: Use realistic mock data for testing
+- **API contracts**: Document expected data structures
+
+## Component Development
+- **ShadCN first**: Always use ShadCN CLI for base components
+- **Composition**: Build complex components from ShadCN primitives
+- **Reusability**: Create reusable component patterns
+- **Documentation**: Document component props and usage
+
+## Design System Implementation
+- **Colors**: Define Pretty.af brand colors in CSS variables
+- **Typography**: Consistent font scales and weights
+- **Spacing**: Use Tailwind spacing scale consistently
+- **Components**: Build design system components
+
+## Performance Guidelines
+- **Bundle size**: Monitor and optimize bundle size
+- **Core Web Vitals**: Meet Google's performance standards
+- **Image optimization**: Use Next.js Image component
+- **Lazy loading**: Implement for non-critical components
+- **Code splitting**: Split by routes and features
+
+## Mobile-First Development
+- **Responsive design**: Start with mobile, enhance for desktop
+- **Touch targets**: Minimum 44px for interactive elements
+- **Performance**: Optimize for mobile networks
+- **Testing**: Test on real devices regularly
+
+## Accessibility Requirements
+- **Semantic HTML**: Use proper HTML elements
+- **ARIA labels**: Add labels for screen readers
+- **Keyboard navigation**: Support tab navigation
+- **Color contrast**: Meet WCAG guidelines
+- **Focus management**: Proper focus handling
+
+## Frontend Documentation
+- **Component docs**: Document all custom components
+- **Storybook**: Maintain component stories
+- **README**: Keep frontend setup instructions updated
+- **Design system**: Document design tokens and patterns
+
+## Code Review Guidelines (Frontend Focus)
+- **UI/UX**: Does the interface match design requirements?
+- **Accessibility**: Is the component accessible?
+- **Performance**: Are there any performance issues?
+- **Responsiveness**: Does it work on all screen sizes?
+- **Component quality**: Is the component reusable and well-structured?
+
+## Backend Integration Preparation
+- **Type definitions**: Create TypeScript interfaces for all data
+- **API contracts**: Document expected API endpoints
+- **Error handling**: Plan error states and loading states
+- **Mock services**: Create mock API services for development
+
+## Deployment (Frontend Only)
+- **Static export**: Prepare for static deployment if needed
+- **Environment variables**: Frontend-only environment variables
+- **Build optimization**: Optimize build for production
+- **CDN**: Prepare assets for CDN deployment
+
+## Monitoring & Analytics (Frontend)
+- **Performance**: Web vitals monitoring
+- **Error tracking**: Frontend error monitoring
+- **User analytics**: Privacy-compliant user tracking
+- **A/B testing**: Frontend experimentation framework
+
+## Communication with Backend Team
+- **API contracts**: Clearly define data requirements
+- **Integration points**: Document where backend connects
+- **Error handling**: Define error response formats
+- **Testing**: Coordinate integration testing approach

@@ -1,0 +1,372 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Mobile UX Patterns & Touch Interactions
+
+## Mobile-First Philosophy
+- **Design for mobile first**, enhance for desktop
+- **Touch-friendly interactions** with minimum 44px targets
+- **Thumb-zone optimization** for one-handed use
+- **Performance-conscious** for mobile networks
+
+## Touch Target Guidelines
+
+### Minimum Sizes
+```tsx
+// Buttons and interactive elements
+className="min-h-[44px] min-w-[44px]" // iOS/Android standard
+
+// Touch-friendly spacing
+className="p-3" // 12px padding minimum
+className="gap-3" // 12px gap between touch targets
+
+// Larger targets for primary actions
+<Button size="lg" className="h-12 px-6"> // 48px height
+```
+
+### Touch Zones
+```tsx
+// Primary action zone (bottom third of screen)
+<div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t">
+  <Button size="lg" className="w-full">
+    Generate Image
+  </Button>
+</div>
+
+// Thumb-friendly navigation (bottom or top)
+<nav className="fixed bottom-0 left-0 right-0 flex justify-around p-2 bg-background border-t">
+  <NavButton icon={Home} label="Home" />
+  <NavButton icon={Search} label="Explore" />
+  <NavButton icon={User} label="Profile" />
+</nav>
+```
+
+## Responsive Layout Patterns
+
+### Mobile Navigation
+```tsx
+// Collapsible mobile menu
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="ghost" size="icon" className="md:hidden">
+      <Menu className="h-6 w-6" />
+    </Button>
+  </SheetTrigger>
+  <SheetContent side="left" className="w-80">
+    <nav className="flex flex-col space-y-4">
+      <NavLink href="/explore">Explore Styles</NavLink>
+      <NavLink href="/trending">Trending</NavLink>
+      <NavLink href="/creators">Creators</NavLink>
+    </nav>
+  </SheetContent>
+</Sheet>
+
+// Bottom tab navigation for mobile
+<div className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t">
+  <div className="grid grid-cols-4 gap-1 p-2">
+    <TabButton icon={Home} label="Home" active />
+    <TabButton icon={Search} label="Explore" />
+    <TabButton icon={Heart} label="Liked" />
+    <TabButton icon={User} label="Profile" />
+  </div>
+</div>
+```
+
+### Mobile-Optimized Grids
+```tsx
+// Responsive style grid
+<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">
+  {styles.map(style => (
+    <StyleCard key={style.id} style={style} compact />
+  ))}
+</div>
+
+// Single column on mobile, multi-column on larger screens
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+```
+
+## Mobile Authentication UX
+
+### Social Login Optimization
+```tsx
+// Large, thumb-friendly social buttons
+<div className="space-y-3">
+  <Button size="lg" className="w-full h-12 bg-twitter-blue text-white">
+    <Twitter className="mr-3 h-5 w-5" />
+    Continue with X
+  </Button>
+  
+  <Button size="lg" variant="outline" className="w-full h-12">
+    <Mail className="mr-3 h-5 w-5" />
+    Continue with Google
+  </Button>
+</div>
+
+// Mobile-optimized form inputs
+<div className="space-y-4">
+  <Input 
+    type="email" 
+    placeholder="Email"
+    className="h-12 text-base" // Prevent zoom on iOS
+    autoComplete="email"
+    inputMode="email"
+  />
+  <Input 
+    type="password" 
+    placeholder="Password"
+    className="h-12 text-base"
+    autoComplete="current-password"
+  />
+</div>
+```
+
+## Mobile Generation Flow
+
+### Touch-Optimized Generation UI
+```tsx
+// Mobile generation modal
+<Dialog>
+  <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+    <DialogHeader>
+      <DialogTitle>Generate with {style.title}</DialogTitle>
+    </DialogHeader>
+    
+    <div className="space-y-4">
+      {/* Large text area for mobile typing */}
+      <Textarea 
+        placeholder="Describe your image..."
+        className="min-h-[120px] text-base resize-none"
+        rows={5}
+      />
+      
+      {/* Touch-friendly parameter controls */}
+      <div className="space-y-3">
+        <Label>Aspect Ratio</Label>
+        <div className="grid grid-cols-3 gap-2">
+          <Button variant="outline" size="sm" className="h-10">1:1</Button>
+          <Button variant="outline" size="sm" className="h-10">4:5</Button>
+          <Button variant="outline" size="sm" className="h-10">16:9</Button>
+        </div>
+      </div>
+      
+      {/* Large generate button */}
+      <Button size="lg" className="w-full h-12 mt-6">
+        Generate Image
+      </Button>
+    </div>
+  </DialogContent>
+</Dialog>
+```
+
+### Mobile Progress Indicators
+```tsx
+// Full-screen mobile progress
+<div className="fixed inset-0 bg-background z-50 flex flex-col items-center justify-center p-6">
+  <div className="w-full max-w-sm space-y-6">
+    <div className="text-center">
+      <div className="animate-spin h-12 w-12 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
+      <h3 className="text-lg font-semibold">Generating your image...</h3>
+      <p className="text-sm text-muted-foreground">This may take 20-30 seconds</p>
+    </div>
+    
+    <Progress value={progress} className="w-full" />
+    
+    <div className="text-center text-sm text-muted-foreground">
+      Position in queue: {queuePosition}
+    </div>
+  </div>
+</div>
+```
+
+## Mobile Gallery & Collections
+
+### Touch-Optimized Image Viewing
+```tsx
+// Mobile image gallery with swipe
+<div className="grid grid-cols-2 gap-1 sm:gap-2">
+  {images.map((image, index) => (
+    <div 
+      key={image.id}
+      className="aspect-square relative cursor-pointer"
+      onClick={() => openLightbox(index)}
+    >
+      <Image 
+        src={image.url} 
+        alt={image.title}
+        fill
+        className="object-cover rounded-sm"
+        sizes="(max-width: 640px) 50vw, 33vw"
+      />
+      
+      {/* Touch-friendly action overlay */}
+      <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors flex items-end p-2">
+        <div className="flex space-x-2">
+          <Button size="icon" variant="secondary" className="h-8 w-8">
+            <Heart className="h-4 w-4" />
+          </Button>
+          <Button size="icon" variant="secondary" className="h-8 w-8">
+            <Share className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+```
+
+### Mobile Collection Management
+```tsx
+// Bottom sheet for mobile actions
+<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline" size="sm">
+      <Plus className="h-4 w-4 mr-2" />
+      Add to Collection
+    </Button>
+  </SheetTrigger>
+  
+  <SheetContent side="bottom" className="h-[60vh]">
+    <SheetHeader>
+      <SheetTitle>Add to Collection</SheetTitle>
+    </SheetHeader>
+    
+    <div className="grid grid-cols-2 gap-3 mt-4">
+      {collections.map(collection => (
+        <Card key={collection.id} className="p-3 cursor-pointer hover:bg-accent">
+          <div className="aspect-video bg-muted rounded mb-2" />
+          <p className="text-sm font-medium">{collection.name}</p>
+          <p className="text-xs text-muted-foreground">{collection.itemCount} items</p>
+        </Card>
+      ))}
+    </div>
+  </SheetContent>
+</Sheet>
+```
+
+## Mobile Creator Dashboard
+
+### Touch-Friendly Analytics
+```tsx
+// Mobile-optimized charts
+<div className="space-y-6">
+  {/* Swipeable metric cards */}
+  <div className="flex space-x-4 overflow-x-auto pb-2 snap-x snap-mandatory">
+    <MetricCard 
+      title="Total Earnings" 
+      value="$1,234" 
+      className="min-w-[280px] snap-start"
+    />
+    <MetricCard 
+      title="This Month" 
+      value="$234" 
+      className="min-w-[280px] snap-start"
+    />
+    <MetricCard 
+      title="Generations" 
+      value="1,456" 
+      className="min-w-[280px] snap-start"
+    />
+  </div>
+  
+  {/* Mobile-friendly chart */}
+  <Card className="p-4">
+    <h3 className="font-semibold mb-4">Earnings Over Time</h3>
+    <div className="h-48">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={earningsData}>
+          <Line type="monotone" dataKey="earnings" stroke="#6366f1" strokeWidth={2} />
+          <XAxis dataKey="date" fontSize={12} />
+          <YAxis fontSize={12} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  </Card>
+</div>
+```
+
+## Mobile Performance Optimizations
+
+### Image Loading
+```tsx
+// Optimized image loading for mobile
+<Image
+  src={imageUrl}
+  alt={alt}
+  width={300}
+  height={300}
+  className="w-full h-auto"
+  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+  priority={index < 4} // Prioritize above-the-fold images
+  placeholder="blur"
+  blurDataURL="data:image/jpeg;base64,..." // Low-quality placeholder
+/>
+```
+
+### Lazy Loading Components
+```tsx
+// Lazy load heavy components on mobile
+const CreatorDashboard = lazy(() => import('./creator-dashboard'))
+const StyleEditor = lazy(() => import('./style-editor'))
+
+// Use with Suspense
+<Suspense fallback={<DashboardSkeleton />}>
+  <CreatorDashboard />
+</Suspense>
+```
+
+## Mobile Accessibility
+
+### Screen Reader Support
+```tsx
+// Mobile-friendly ARIA labels
+<Button 
+  aria-label="Like this style"
+  className="h-12 w-12" // Large touch target
+>
+  <Heart className="h-5 w-5" />
+</Button>
+
+// Skip links for mobile navigation
+<a 
+  href="#main-content" 
+  className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded"
+>
+  Skip to main content
+</a>
+```
+
+### Keyboard Navigation on Mobile
+```tsx
+// Ensure keyboard navigation works with external keyboards
+<div 
+  className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+  tabIndex={0}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      handleAction()
+    }
+  }}
+>
+```
+
+## Mobile Testing Guidelines
+
+### Device Testing
+- **iOS Safari**: Test on actual iOS devices
+- **Android Chrome**: Test on various Android devices
+- **Responsive testing**: Use browser dev tools
+- **Touch testing**: Verify all interactions work with touch
+
+### Performance Testing
+- **Network throttling**: Test on 3G/4G speeds
+- **Battery usage**: Monitor for excessive battery drain
+- **Memory usage**: Check for memory leaks
+- **Bundle size**: Keep mobile bundles optimized
+
+### Usability Testing
+- **One-handed use**: Ensure thumb-zone accessibility
+- **Landscape mode**: Test rotation handling
+- **Interruptions**: Handle calls, notifications gracefully
+- **Offline behavior**: Graceful degradation when offline

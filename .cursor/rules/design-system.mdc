@@ -1,0 +1,270 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Pretty.af Design System
+
+## Brand Identity
+- **Name**: Pretty.af
+- **Tagline**: "AI-Powered Image Generation Marketplace"
+- **Personality**: Modern, Creative, Accessible, Social-First
+
+## Color System
+
+### Primary Colors
+```css
+:root {
+  /* Pretty.af Brand Colors */
+  --pretty-primary: #6366f1; /* Indigo - main brand color */
+  --pretty-primary-hover: #4f46e5;
+  --pretty-primary-light: #a5b4fc;
+  
+  /* Social Authentication Colors */
+  --twitter-blue: #1da1f2;
+  --twitter-blue-hover: #1a91da;
+  --google-red: #ea4335;
+  --google-red-hover: #d33b2c;
+  
+  /* Status Colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+}
+```
+
+### Neutral Colors (Tailwind-based)
+```css
+:root {
+  /* Light Mode */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 98%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --border: 214.3 31.8% 91.4%;
+  
+  /* Dark Mode */
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --border: 217.2 32.6% 17.5%;
+  }
+}
+```
+
+## Typography
+
+### Font Stack
+```css
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+```
+
+### Type Scale
+```css
+/* Headings */
+.text-display: 4rem / 1.1 / 800; /* 64px */
+.text-h1: 3rem / 1.2 / 700;      /* 48px */
+.text-h2: 2.25rem / 1.3 / 600;   /* 36px */
+.text-h3: 1.875rem / 1.4 / 600;  /* 30px */
+.text-h4: 1.5rem / 1.5 / 500;    /* 24px */
+
+/* Body Text */
+.text-lg: 1.125rem / 1.6 / 400;  /* 18px */
+.text-base: 1rem / 1.6 / 400;    /* 16px */
+.text-sm: 0.875rem / 1.5 / 400;  /* 14px */
+.text-xs: 0.75rem / 1.4 / 400;   /* 12px */
+```
+
+## Spacing System
+
+### Consistent Spacing (Tailwind-based)
+```css
+/* Use Tailwind spacing scale consistently */
+--space-1: 0.25rem;  /* 4px */
+--space-2: 0.5rem;   /* 8px */
+--space-3: 0.75rem;  /* 12px */
+--space-4: 1rem;     /* 16px */
+--space-6: 1.5rem;   /* 24px */
+--space-8: 2rem;     /* 32px */
+--space-12: 3rem;    /* 48px */
+--space-16: 4rem;    /* 64px */
+```
+
+### Component Spacing Guidelines
+- **Card padding**: `p-6` (24px)
+- **Button padding**: `px-4 py-2` (16px/8px)
+- **Section spacing**: `py-12` (48px)
+- **Element gaps**: `gap-4` or `gap-6` (16px/24px)
+
+## Component Patterns
+
+### Button Hierarchy
+```tsx
+// Primary Action (X/Twitter OAuth)
+<Button size="lg" className="w-full bg-twitter-blue hover:bg-twitter-blue-hover">
+  <XIcon className="mr-2 h-5 w-5" />
+  Continue with X
+</Button>
+
+// Secondary Action (Google OAuth)
+<Button size="md" variant="outline" className="w-full">
+  <GoogleIcon className="mr-2 h-4 w-4" />
+  Continue with Google
+</Button>
+
+// Tertiary Action (Email)
+<Button variant="link" size="sm" className="text-muted-foreground">
+  Sign up with email
+</Button>
+```
+
+### Card Patterns
+```tsx
+// Style Card
+<Card className="overflow-hidden hover:shadow-lg transition-shadow">
+  <div className="aspect-square relative">
+    <Image src={style.coverImageUrl} alt={style.title} fill />
+  </div>
+  <CardContent className="p-4">
+    <h3 className="font-semibold text-lg">{style.title}</h3>
+    <p className="text-sm text-muted-foreground">{style.creator.displayName}</p>
+  </CardContent>
+</Card>
+```
+
+### Navigation Patterns
+```tsx
+// Header with generation counter
+<header className="border-b bg-background/95 backdrop-blur">
+  <div className="container flex h-16 items-center justify-between">
+    <Logo />
+    <nav className="hidden md:flex items-center space-x-6">
+      <NavLink href="/explore">Explore</NavLink>
+      <NavLink href="/trending">Trending</NavLink>
+    </nav>
+    <div className="flex items-center space-x-4">
+      <GenerationCounter remaining={3} />
+      <UserMenu />
+    </div>
+  </div>
+</header>
+```
+
+## Responsive Design
+
+### Breakpoints (Tailwind)
+```css
+sm: 640px   /* Mobile landscape */
+md: 768px   /* Tablet */
+lg: 1024px  /* Desktop */
+xl: 1280px  /* Large desktop */
+2xl: 1536px /* Extra large */
+```
+
+### Mobile-First Patterns
+```tsx
+// Responsive grid
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+// Responsive text
+<h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">
+
+// Responsive spacing
+<section className="py-8 md:py-12 lg:py-16">
+```
+
+## Animation & Transitions
+
+### Consistent Timing
+```css
+:root {
+  --transition-fast: 150ms ease-out;
+  --transition-normal: 250ms ease-out;
+  --transition-slow: 350ms ease-out;
+}
+```
+
+### Common Animations
+```tsx
+// Hover effects
+className="transition-colors hover:bg-accent"
+className="transition-shadow hover:shadow-lg"
+className="transition-transform hover:scale-105"
+
+// Loading states
+className="animate-pulse"
+className="animate-spin"
+
+// Enter/exit animations
+className="animate-in slide-in-from-bottom-4"
+className="animate-out slide-out-to-top-4"
+```
+
+## Accessibility Guidelines
+
+### Color Contrast
+- **Text on background**: Minimum 4.5:1 ratio
+- **Large text**: Minimum 3:1 ratio
+- **Interactive elements**: Clear focus states
+
+### Interactive Elements
+```tsx
+// Focus states
+className="focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+
+// Touch targets (minimum 44px)
+className="min-h-[44px] min-w-[44px]"
+
+// Screen reader support
+<Button aria-label="Generate image with this style">
+  <PlayIcon className="h-4 w-4" />
+</Button>
+```
+
+## Icon System
+
+### Icon Library: Lucide React
+```tsx
+import { 
+  Heart, Share, Download, Play, Pause, 
+  User, Settings, Search, Filter,
+  Twitter, Mail, Wallet, CreditCard 
+} from 'lucide-react'
+
+// Consistent sizing
+<Icon className="h-4 w-4" />  // Small
+<Icon className="h-5 w-5" />  // Medium  
+<Icon className="h-6 w-6" />  // Large
+```
+
+## Implementation Files
+
+### Global Styles
+- [app/globals.css](mdc:app/globals.css) - CSS custom properties and base styles
+- [tailwind.config.ts](mdc:tailwind.config.ts) - Tailwind configuration
+- [components.json](mdc:components.json) - ShadCN configuration
+
+### Component Examples
+- [components/ui/button.tsx](mdc:components/ui/button.tsx) - Button variants
+- [components/style-card.tsx](mdc:components/style-card.tsx) - Style card pattern
+- [components/site-header.tsx](mdc:components/site-header.tsx) - Navigation pattern
+
+## Brand Application
+
+### Logo Usage
+- **Primary logo**: Use on light backgrounds
+- **White logo**: Use on dark/colored backgrounds
+- **Minimum size**: 120px width for digital
+- **Clear space**: Minimum logo width around logo
+
+### Voice & Tone
+- **Friendly**: Approachable and welcoming
+- **Creative**: Inspiring and artistic
+- **Professional**: Trustworthy and reliable
+- **Inclusive**: Accessible to all skill levels

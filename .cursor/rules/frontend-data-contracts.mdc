@@ -1,0 +1,336 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Frontend Data Contracts & Backend Integration
+
+## Purpose
+This rule defines the data structures and API contracts that the frontend expects from the backend team. All frontend components will be built using these interfaces with mock data.
+
+## Core Data Types
+
+### User Interface
+```typescript
+interface User {
+  id: string
+  email: string
+  username: string
+  displayName: string
+  bio?: string
+  avatarUrl?: string
+  coverImageUrl?: string
+  socialAccounts: {
+    twitter?: string
+    google?: string
+  }
+  freeGenerationsRemaining: number
+  totalGenerations: number
+  isCreator: boolean
+  isVerified: boolean
+  walletAddress?: string
+  createdAt: string
+  updatedAt: string
+}
+```
+
+### Style Interface
+```typescript
+interface Style {
+  id: string
+  creatorId: string
+  creator: {
+    id: string
+    username: string
+    displayName: string
+    avatarUrl?: string
+    isVerified: boolean
+  }
+  title: string
+  description: string
+  category: string
+  tags: string[]
+  coverImageUrl: string
+  exampleImages: string[]
+  pricePerGeneration: number
+  currency: 'ETH' | 'USDC' | 'PENGU'
+  isFree: boolean
+  isPublished: boolean
+  totalGenerations: number
+  totalLikes: number
+  isLiked?: boolean // For authenticated users
+  createdAt: string
+  updatedAt: string
+}
+```
+
+### Generation Interface
+```typescript
+interface Generation {
+  id: string
+  userId: string
+  styleId: string
+  style: Pick<Style, 'id' | 'title' | 'creator'>
+  prompt: string
+  imageUrl?: string
+  parameters: {
+    aspectRatio: string
+    quality: 'standard' | 'premium'
+    [key: string]: any
+  }
+  status: 'pending' | 'processing' | 'completed' | 'failed'
+  isPublic: boolean
+  transactionHash?: string
+  createdAt: string
+  completedAt?: string
+}
+```
+
+### Collection Interface
+```typescript
+interface Collection {
+  id: string
+  userId: string
+  name: string
+  description?: string
+  isPublic: boolean
+  coverImageUrl?: string
+  itemCount: number
+  items?: CollectionItem[]
+  createdAt: string
+  updatedAt: string
+}
+
+interface CollectionItem {
+  id: string
+  collectionId: string
+  styleId?: string
+  generationId?: string
+  style?: Style
+  generation?: Generation
+  addedAt: string
+}
+```
+
+### Creator Analytics Interface
+```typescript
+interface CreatorAnalytics {
+  totalEarnings: number
+  currentMonthEarnings: number
+  totalGenerations: number
+  totalStyles: number
+  totalFollowers: number
+  topPerformingStyles: Array<{
+    styleId: string
+    title: string
+    generations: number
+    earnings: number
+  }>
+  earningsHistory: Array<{
+    date: string
+    amount: number
+  }>
+  generationsHistory: Array<{
+    date: string
+    count: number
+  }>
+}
+```
+
+## API Endpoints Expected by Frontend
+
+### Authentication Endpoints
+```typescript
+// POST /api/auth/register
+interface RegisterRequest {
+  provider: 'twitter' | 'google' | 'email'
+  email?: string
+  password?: string
+  displayName?: string
+}
+
+interface AuthResponse {
+  user: User
+  token: string
+}
+```
+
+### Style Endpoints
+```typescript
+// GET /api/styles/trending
+// GET /api/styles/featured  
+// GET /api/styles/new
+interface StylesResponse {
+  styles: Style[]
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    hasMore: boolean
+  }
+}
+
+// GET /api/styles/search?q=query&category=cat&tags=tag1,tag2
+interface StyleSearchResponse extends StylesResponse {
+  query: string
+  filters: {
+    category?: string
+    tags?: string[]
+    priceRange?: [number, number]
+  }
+}
+```
+
+### Generation Endpoints
+```typescript
+// POST /api/generations/create
+interface CreateGenerationRequest {
+  styleId: string
+  prompt: string
+  parameters: {
+    aspectRatio: string
+    quality: 'standard' | 'premium'
+  }
+}
+
+interface CreateGenerationResponse {
+  generation: Generation
+  estimatedWaitTime: number
+  queuePosition: number
+}
+
+// GET /api/generations/status/:id
+interface GenerationStatusResponse {
+  generation: Generation
+  queuePosition?: number
+  estimatedWaitTime?: number
+}
+```
+
+### User Endpoints
+```typescript
+// GET /api/users/profile
+// PUT /api/users/profile
+interface UpdateProfileRequest {
+  displayName?: string
+  bio?: string
+  avatarUrl?: string
+}
+
+// GET /api/users/:id/collections
+interface UserCollectionsResponse {
+  collections: Collection[]
+}
+```
+
+## Mock Data Services
+
+### Mock User Service
+```typescript
+// lib/mock-data/users.ts
+export const mockCurrentUser: User = {
+  id: '1',
+  email: 'user@example.com',
+  username: 'artlover',
+  displayName: 'Art Lover',
+  freeGenerationsRemaining: 3,
+  totalGenerations: 12,
+  isCreator: false,
+  isVerified: false,
+  createdAt: '2024-01-01T00:00:00Z',
+  updatedAt: '2024-01-01T00:00:00Z'
+}
+```
+
+### Mock Style Service
+```typescript
+// lib/mock-data/styles.ts
+export const mockTrendingStyles: Style[] = [
+  {
+    id: '1',
+    creatorId: 'creator1',
+    creator: {
+      id: 'creator1',
+      username: 'neonartist',
+      displayName: 'Neon Artist',
+      isVerified: true
+    },
+    title: 'Cyberpunk Neon',
+    description: 'Futuristic neon-lit cityscapes',
+    category: 'Cyberpunk',
+    tags: ['neon', 'futuristic', 'city'],
+    coverImageUrl: '/mock-images/cyberpunk-neon.jpg',
+    exampleImages: ['/mock-images/example1.jpg'],
+    pricePerGeneration: 0.01,
+    currency: 'ETH',
+    isFree: false,
+    isPublished: true,
+    totalGenerations: 1243,
+    totalLikes: 456,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z'
+  }
+  // ... more mock styles
+]
+```
+
+## Error Response Format
+```typescript
+interface ErrorResponse {
+  success: false
+  error: {
+    code: string
+    message: string
+    details?: any
+  }
+}
+
+// Common error codes frontend should handle
+type ErrorCode = 
+  | 'UNAUTHORIZED'
+  | 'INSUFFICIENT_GENERATIONS'
+  | 'STYLE_NOT_FOUND'
+  | 'GENERATION_FAILED'
+  | 'PAYMENT_REQUIRED'
+  | 'VALIDATION_ERROR'
+```
+
+## Loading States
+```typescript
+interface LoadingState {
+  isLoading: boolean
+  error?: string
+  data?: any
+}
+
+// Example usage in components
+const [stylesState, setStylesState] = useState<LoadingState>({
+  isLoading: true,
+  error: undefined,
+  data: undefined
+})
+```
+
+## Integration Points Documentation
+
+### Where Backend Connects
+1. **Authentication**: OAuth callbacks and session management
+2. **Style Discovery**: API calls for trending, featured, search
+3. **Generation System**: Image generation queue and status
+4. **User Management**: Profile updates and settings
+5. **Creator Dashboard**: Analytics and earnings data
+6. **Payment Processing**: Wallet integration and transactions
+
+### Frontend Responsibilities
+- UI/UX implementation
+- Form validation and user input
+- Loading states and error handling
+- Responsive design and accessibility
+- Component composition and reusability
+
+### Backend Responsibilities
+- Data persistence and retrieval
+- Authentication and authorization
+- AI service integration
+- Payment processing
+- Real-time updates and notifications

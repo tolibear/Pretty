@@ -1,0 +1,69 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# ShadCN UI Guidelines
+
+## Installation & Setup
+- **Initialize**: Use `npx shadcn init` for new components
+- **Add Components**: Use `npx shadcn add [component-name]` 
+- **Never**: Manually copy component code, always use CLI
+
+## Component Usage Philosophy
+- **Copy & Paste**: ShadCN components are meant to be copied into your codebase
+- **Customization**: Modify components directly in your codebase after installation
+- **Ownership**: You own the component code once installed
+
+## Available Component Categories
+
+### Layout & Navigation
+- **Dashboard**: Use dashboard blocks for creator analytics
+- **Authentication**: Use auth blocks for login/signup flows
+- **Charts**: Use chart components for analytics visualization
+
+### Key Components for Pretty.af
+- **Button**: Primary CTAs, generation triggers
+- **Card**: Style cards, creator spotlights
+- **Dialog**: Generation modals, confirmations
+- **Form**: User inputs, style creation
+- **Table**: Creator earnings, transaction history
+- **Tabs**: Style categories (trending/featured/new)
+- **Avatar**: User profiles, creator images
+- **Badge**: Verification status, style tags
+
+## Component File Structure
+```
+components/
+├── ui/                    # ShadCN base components
+│   ├── button.tsx
+│   ├── card.tsx
+│   ├── dialog.tsx
+│   └── ...
+├── [feature-components]   # Custom composed components
+```
+
+## Styling Guidelines
+- **Base**: All ShadCN components use Tailwind CSS
+- **Customization**: Modify CSS variables in globals.css
+- **Themes**: Support light/dark mode via next-themes
+- **Colors**: Use CSS custom properties for consistent theming
+
+## Best Practices
+1. **Always use the CLI** to add new components
+2. **Customize after installation** - don't modify base files
+3. **Compose complex components** from ShadCN primitives
+4. **Use Radix UI primitives** for accessibility
+5. **Follow the component patterns** established in existing code
+
+## Pretty.af Specific Usage
+- **Style Cards**: Combine Card + Avatar + Badge components
+- **Creator Dashboard**: Use dashboard blocks as foundation
+- **Authentication**: Use auth blocks for social login flows
+- **Analytics**: Use chart components for creator metrics
+- **Generation UI**: Compose Dialog + Form + Progress components
+
+## Reference Files
+- [components.json](mdc:components.json) - ShadCN configuration
+- [tailwind.config.ts](mdc:tailwind.config.ts) - Tailwind setup
+- [app/globals.css](mdc:app/globals.css) - Global styles and CSS variables

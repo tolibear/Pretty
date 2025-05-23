@@ -6,10 +6,11 @@ import { SiteFooter } from "@/components/site-footer"
 import { HeroSection } from "@/components/hero-section"
 import { StyleCard } from "@/components/style-card"
 import { CreatorSpotlight } from "@/components/creator-spotlight"
+import { AuthTestingPanel } from "@/lib/auth-context"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main className="flex-1">
         <HeroSection />
@@ -80,6 +81,7 @@ export default function HomePage() {
         </section>
       </main>
       <SiteFooter />
+      <AuthTestingPanel />
     </div>
   )
 }

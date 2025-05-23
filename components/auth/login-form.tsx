@@ -12,7 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
-import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { useAuth } from "@/lib/auth-context"
 
 const formSchema = z.object({
   email: z.string().email({
@@ -26,6 +26,7 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter()
+  const { login } = useAuth()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,29 +41,30 @@ export function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      await login(values.email, values.password)
+      
+      toast({
+        title: "Login successful!",
+        description: "Welcome back to Pretty.af.",
+      })
 
-    setIsLoading(false)
-
-    toast({
-      title: "Login successful!",
-      description: "Welcome back to Pretty.af.",
-    })
-
-    // Redirect to dashboard
-    router.push("/dashboard")
+      // Redirect to dashboard
+      router.push("/dashboard")
+    } catch (error) {
+      toast({
+        title: "Login failed",
+        description: "Please check your credentials and try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Sign in</CardTitle>
-          <CardDescription>
-            Welcome back to Pretty.af.
-          </CardDescription>
-        </CardHeader>
         <FormField
           control={form.control}
           name="email"
@@ -70,7 +72,13 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="name@example.com" {...field} />
+                <Input 
+                  placeholder="name@example.com" 
+                  type="email"
+                  autoComplete="email"
+                  className="h-11"
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -91,7 +99,13 @@ export function LoginForm() {
                 </Link>
               </div>
               <FormControl>
-                <Input type="password" placeholder="Enter your password" {...field} />
+                <Input 
+                  type="password" 
+                  placeholder="Enter your password"
+                  autoComplete="current-password"
+                  className="h-11"
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -106,66 +120,22 @@ export function LoginForm() {
                 <Checkbox checked={field.value} onCheckedChange={field.onChange} />
               </FormControl>
               <div className="space-y-1 leading-none">
-                <FormLabel>Remember me</FormLabel>
+                <FormLabel className="text-sm font-normal">Remember me</FormLabel>
               </div>
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <Button type="submit" className="w-full h-11" disabled={isLoading}>
           {isLoading ? (
             <>
-              <svg
-                className="mr-2 h-4 w-4 animate-spin"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-              </svg>
+              <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
               Signing in...
             </>
           ) : (
-            "Sign in"
+            "Sign in with Email"
           )}
         </Button>
       </form>
-      <div className="grid grid-cols-2 gap-6 mt-4">
-        <Button variant="outline" type="button" disabled={isLoading}>
-          <svg className="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-          </svg>
-          Sign in with X
-        </Button>
-        <Button variant="outline" type="button" disabled={isLoading}>
-          <svg
-            className="mr-2 h-4 w-4"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <circle cx="12" cy="10" r="3" />
-            <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
-          </svg>
-          Sign in with Google
-        </Button>
-      </div>
-      <div className="text-center text-sm text-muted-foreground mt-4">
-        <p>New users get 20 free generations.</p>
-        <p className="mt-1">Connect your wallet only when you need to pay.</p>
-      </div>
     </Form>
   )
 }
