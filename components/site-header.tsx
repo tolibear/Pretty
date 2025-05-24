@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { Logo } from "@/components/ui/logo"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Search, Menu, Bell, User } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -26,18 +27,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/lib/auth-context"
 import { ImageUrls } from "@/lib/image-service"
+import { FreeGenerationsTracker } from "@/components/free-generations-tracker"
 import React from "react"
-
-function GenerationCounter({ remaining }: { remaining: number }) {
-  return (
-    <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded-full">
-      <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-      <span className="text-sm font-medium">
-        {remaining} generations left
-      </span>
-    </div>
-  )
-}
 
 function UserMenu() {
   const { user, logout } = useAuth()
@@ -90,24 +81,22 @@ function UserMenu() {
 export function SiteHeader() {
   const { user, isAuthenticated, logout } = useAuth()
 
+  const handleUpgrade = () => {
+    console.log('Upgrade clicked from header')
+    // In real app, this would trigger upgrade flow
+  }
+
+  const handleConnectWallet = () => {
+    console.log('Connect wallet clicked from header')
+    // In real app, this would trigger wallet connection
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-6 w-6"
-            >
-              <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
-            </svg>
-            <span className="hidden font-bold sm:inline-block">Pretty.af</span>
+          <Link href="/" className="mr-6 flex items-center">
+            <Logo width={100} height={27} />
           </Link>
           <NavigationMenu>
             <NavigationMenuList>
@@ -178,20 +167,8 @@ export function SiteHeader() {
         
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
-            <Link href="/" className="mr-6 flex items-center space-x-2 md:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-6 w-6"
-              >
-                <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
-              </svg>
-              <span className="font-bold">Pretty.af</span>
+            <Link href="/" className="mr-6 flex items-center md:hidden">
+              <Logo width={80} height={22} />
             </Link>
           </div>
         
@@ -204,7 +181,12 @@ export function SiteHeader() {
             {isAuthenticated && user ? (
               <>
                 <div className="hidden md:block">
-                  <GenerationCounter remaining={user.freeGenerationsRemaining} />
+                  <FreeGenerationsTracker
+                    remaining={user.freeGenerationsRemaining}
+                    total={5}
+                    onUpgrade={handleUpgrade}
+                    onConnectWallet={handleConnectWallet}
+                  />
                 </div>
                 <Button variant="ghost" size="icon">
                   <Bell className="h-5 w-5" />
@@ -248,7 +230,12 @@ export function SiteHeader() {
                   
                   {isAuthenticated && user ? (
                     <div className="flex flex-col gap-4 mt-6 pt-6 border-t">
-                      <GenerationCounter remaining={user.freeGenerationsRemaining} />
+                      <FreeGenerationsTracker
+                        remaining={user.freeGenerationsRemaining}
+                        total={5}
+                        onUpgrade={handleUpgrade}
+                        onConnectWallet={handleConnectWallet}
+                      />
                       <Link href="/dashboard" className="text-lg font-medium">
                         Dashboard
                       </Link>

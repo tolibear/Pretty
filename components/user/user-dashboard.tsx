@@ -19,9 +19,10 @@ import {
 import { 
   Plus, Search, MoreHorizontal, Heart, Download, Share, Folder, 
   Image as ImageIcon, Settings, TrendingUp, Calendar, Star,
-  Zap, Crown, Users, Eye, Filter, Grid, List
+  Zap, Crown, Users, Eye, Filter, Grid, List, CheckCircle2
 } from "lucide-react"
 import { FreeGenerationsTracker } from "./free-generations-tracker"
+import { ImageUrls } from "@/lib/image-service"
 
 // Mock data for user profile
 const mockUser = {
@@ -29,7 +30,7 @@ const mockUser = {
   username: "artlover",
   displayName: "Art Lover",
   email: "artlover@example.com",
-  avatarUrl: "/placeholder-avatar.jpg",
+  avatarUrl: ImageUrls.userAvatar("artlover", "user"),
   bio: "Digital art enthusiast and AI image generation explorer",
   joinedAt: "2024-01-01",
   freeGenerationsRemaining: 3,
@@ -48,7 +49,7 @@ const mockRecentActivity = [
     title: "Created new image",
     description: "Cyberpunk cityscape with neon lights",
     timestamp: "2024-01-20T10:30:00Z",
-    imageUrl: "/placeholder-image.jpg",
+    imageUrl: ImageUrls.generationResult("Cyberpunk cityscape with neon lights", "cyberpunk", "16:9", "premium"),
   },
   {
     id: "2",
@@ -73,7 +74,7 @@ const mockCollections = [
     name: "Cyberpunk Vibes",
     description: "Futuristic and neon-inspired styles",
     itemCount: 12,
-    coverImageUrl: "/placeholder-image.jpg",
+    coverImageUrl: ImageUrls.collectionCover("Cyberpunk Vibes"),
     isPublic: true,
     createdAt: "2024-01-15",
     lastUpdated: "2024-01-20",
@@ -83,7 +84,7 @@ const mockCollections = [
     name: "Nature & Landscapes",
     description: "Beautiful natural scenery styles",
     itemCount: 8,
-    coverImageUrl: "/placeholder-image.jpg",
+    coverImageUrl: ImageUrls.collectionCover("Nature & Landscapes"),
     isPublic: false,
     createdAt: "2024-01-10",
     lastUpdated: "2024-01-18",
@@ -93,10 +94,30 @@ const mockCollections = [
     name: "Portrait Styles",
     description: "Character and portrait generation styles",
     itemCount: 15,
-    coverImageUrl: "/placeholder-image.jpg",
+    coverImageUrl: ImageUrls.collectionCover("Portrait Styles"),
     isPublic: true,
     createdAt: "2024-01-05",
     lastUpdated: "2024-01-19",
+  },
+  {
+    id: "4",
+    name: "Abstract Art",
+    description: "Modern abstract and geometric styles",
+    itemCount: 6,
+    coverImageUrl: ImageUrls.collectionCover("Abstract Art"),
+    isPublic: true,
+    createdAt: "2024-01-12",
+    lastUpdated: "2024-01-17",
+  },
+  {
+    id: "5",
+    name: "Vintage Photography",
+    description: "Retro and film-inspired styles",
+    itemCount: 9,
+    coverImageUrl: ImageUrls.collectionCover("Vintage Photography"),
+    isPublic: false,
+    createdAt: "2024-01-08",
+    lastUpdated: "2024-01-16",
   },
 ]
 
@@ -105,7 +126,7 @@ const mockGenerations = [
   {
     id: "1",
     prompt: "A cyberpunk cityscape at night with neon lights reflecting on wet streets",
-    imageUrl: "/placeholder-image.jpg",
+    imageUrl: ImageUrls.generationResult("A cyberpunk cityscape at night with neon lights reflecting on wet streets", "cyberpunk", "16:9", "premium"),
     styleName: "Cyberpunk Neon",
     styleId: "style1",
     creatorName: "NeonArtist",
@@ -120,7 +141,7 @@ const mockGenerations = [
   {
     id: "2",
     prompt: "A serene mountain landscape with morning mist and golden sunlight",
-    imageUrl: "/placeholder-image.jpg",
+    imageUrl: ImageUrls.generationResult("A serene mountain landscape with morning mist and golden sunlight", "nature", "4:5", "standard"),
     styleName: "Nature Photography",
     styleId: "style2",
     creatorName: "LandscapeAI",
@@ -135,7 +156,7 @@ const mockGenerations = [
   {
     id: "3",
     prompt: "Portrait of a wise old wizard with a long flowing beard and mystical eyes",
-    imageUrl: "/placeholder-image.jpg",
+    imageUrl: ImageUrls.generationResult("Portrait of a wise old wizard with a long flowing beard and mystical eyes", "fantasy", "1:1", "premium"),
     styleName: "Fantasy Portrait",
     styleId: "style3",
     creatorName: "FantasyMaster",
@@ -150,7 +171,7 @@ const mockGenerations = [
   {
     id: "4",
     prompt: "Modern minimalist living room with clean lines and natural lighting",
-    imageUrl: "/placeholder-image.jpg",
+    imageUrl: ImageUrls.generationResult("Modern minimalist living room with clean lines and natural lighting", "minimal", "16:9", "standard"),
     styleName: "Interior Design",
     styleId: "style4",
     creatorName: "DesignPro",
@@ -158,6 +179,66 @@ const mockGenerations = [
     isPublic: true,
     likes: 18,
     downloads: 6,
+    aspectRatio: "16:9",
+    quality: "Standard",
+    status: "completed",
+  },
+  {
+    id: "5",
+    prompt: "Vintage film photography of a classic car on an empty highway",
+    imageUrl: ImageUrls.generationResult("Vintage film photography of a classic car on an empty highway", "vintage", "3:2", "premium"),
+    styleName: "Vintage Film",
+    styleId: "style5",
+    creatorName: "RetroMaster",
+    createdAt: "2024-01-16T11:30:00Z",
+    isPublic: true,
+    likes: 28,
+    downloads: 12,
+    aspectRatio: "3:2",
+    quality: "Premium",
+    status: "completed",
+  },
+  {
+    id: "6",
+    prompt: "Abstract geometric patterns with vibrant colors and flowing shapes",
+    imageUrl: ImageUrls.generationResult("Abstract geometric patterns with vibrant colors and flowing shapes", "abstract", "1:1", "standard"),
+    styleName: "Geometric Abstract",
+    styleId: "style6",
+    creatorName: "AbstractArtist",
+    createdAt: "2024-01-15T16:45:00Z",
+    isPublic: false,
+    likes: 14,
+    downloads: 5,
+    aspectRatio: "1:1",
+    quality: "Standard",
+    status: "completed",
+  },
+  {
+    id: "7",
+    prompt: "Anime-style character with colorful hair and magical powers",
+    imageUrl: ImageUrls.generationResult("Anime-style character with colorful hair and magical powers", "anime", "2:3", "premium"),
+    styleName: "Anime Character",
+    styleId: "style7",
+    creatorName: "AnimeCreator",
+    createdAt: "2024-01-14T13:20:00Z",
+    isPublic: true,
+    likes: 42,
+    downloads: 18,
+    aspectRatio: "2:3",
+    quality: "Premium",
+    status: "completed",
+  },
+  {
+    id: "8",
+    prompt: "Street art mural with bold colors and urban themes",
+    imageUrl: ImageUrls.generationResult("Street art mural with bold colors and urban themes", "street", "16:9", "standard"),
+    styleName: "Urban Street Art",
+    styleId: "style8",
+    creatorName: "StreetArtist",
+    createdAt: "2024-01-13T09:10:00Z",
+    isPublic: true,
+    likes: 31,
+    downloads: 9,
     aspectRatio: "16:9",
     quality: "Standard",
     status: "completed",
@@ -204,7 +285,7 @@ export function UserDashboard() {
                 <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{mockUser.displayName}</h1>
                 {mockUser.isVerified && (
                   <Badge variant="secondary" className="bg-blue-100 text-blue-700">
-                    <Star className="h-3 w-3 mr-1" />
+                    <CheckCircle2 className="h-3 w-3 mr-1" />
                     Verified
                   </Badge>
                 )}

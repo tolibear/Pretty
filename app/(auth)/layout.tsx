@@ -2,11 +2,12 @@ import type React from "react"
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
+import { Logo } from "@/components/ui/logo"
 import { ModeToggle } from "@/components/mode-toggle"
 
 export const metadata: Metadata = {
-  title: "Authentication - Pretty.af",
-  description: "Authentication pages for Pretty.af",
+  title: "Authentication - Pretty",
+  description: "Authentication pages for Pretty",
 }
 
 export default function AuthLayout({
@@ -27,24 +28,12 @@ export default function AuthLayout({
           />
         </div>
         <Link href="/" className="relative z-20 flex items-center text-lg font-medium">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="mr-2 h-6 w-6"
-          >
-            <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
-          </svg>
-          Pretty.af
+          <Logo width={80} height={22} className="text-white" />
         </Link>
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             <p className="text-lg">
-              "Pretty.af has transformed how I create and share my AI art styles. The platform is intuitive and the
+              "Pretty has transformed how I create and share my AI art styles. The platform is intuitive and the
               community is incredibly supportive."
             </p>
             <footer className="text-sm">Sofia Chen, Digital Artist</footer>
@@ -56,19 +45,7 @@ export default function AuthLayout({
           <div className="flex items-center justify-between">
             <div className="flex lg:hidden">
               <Link href="/" className="flex items-center text-lg font-medium">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mr-2 h-6 w-6"
-                >
-                  <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
-                </svg>
-                Pretty.af
+                <Logo width={70} height={19} />
               </Link>
             </div>
             <ModeToggle />

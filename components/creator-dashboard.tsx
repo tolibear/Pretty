@@ -150,7 +150,7 @@ export function CreatorDashboard() {
                     <div key={style.id} className="flex items-center">
                       <div className="w-12 h-12 rounded overflow-hidden mr-4 flex-shrink-0">
                         <img
-                          src={style.coverImage || "/placeholder.svg"}
+                          src={style.coverImage || ImageUrls.placeholder(48, 48, style.title)}
                           alt={style.title}
                           className="w-full h-full object-cover"
                         />

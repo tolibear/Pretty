@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent } from "@/components/ui/card"
 import { toast } from "@/components/ui/use-toast"
+import { ImageUrls } from "@/lib/image-service"
 
 interface ImageViewerProps {
   isOpen: boolean
@@ -79,7 +80,7 @@ export function ImageViewer({ isOpen, onClose, image, style }: ImageViewerProps)
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 py-4">
           <div className="lg:col-span-3">
             <div className="relative aspect-square overflow-hidden rounded-lg border border-border">
-              <img src={image || "/placeholder.svg"} alt="Made image" className="object-cover w-full h-full" />
+              <img src={image || ImageUrls.placeholder(600, 600, "Generated Image")} alt="Made image" className="object-cover w-full h-full" />
             </div>
 
             <div className="flex justify-between items-center mt-4">
@@ -125,7 +126,7 @@ export function ImageViewer({ isOpen, onClose, image, style }: ImageViewerProps)
               <h3 className="font-medium">Style</h3>
               <div className="flex items-center gap-2">
                 <Avatar className="h-6 w-6">
-                  <AvatarImage src={style.creator.avatar || "/placeholder.svg"} alt={style.creator.name} />
+                  <AvatarImage src={style.creator.avatar || ImageUrls.creatorAvatar(style.creator.handle)} alt={style.creator.name} />
                   <AvatarFallback>{style.creator.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div className="text-sm">
@@ -187,7 +188,7 @@ export function ImageViewer({ isOpen, onClose, image, style }: ImageViewerProps)
                   <Card key={i} className="overflow-hidden cursor-pointer hover:bg-secondary/50 transition-colors">
                     <div className="aspect-square overflow-hidden">
                       <img
-                        src={`/images/similar-style-${i}.png`}
+                        src={ImageUrls.styleImage(`Similar Style ${i}`, "cyberpunk")}
                         alt={`Similar style ${i}`}
                         className="object-cover w-full h-full"
                       />

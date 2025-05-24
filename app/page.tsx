@@ -7,7 +7,7 @@ import { HeroSection } from "@/components/hero-section"
 import { StyleCard } from "@/components/style-card"
 import { CreatorSpotlight } from "@/components/creator-spotlight"
 import { AuthTestingPanel } from "@/lib/auth-context"
-import { ArrowRight, TrendingUp } from "lucide-react"
+import { ArrowRight, TrendingUp, Star, Sparkles, Zap } from "lucide-react"
 import { DataAdapters } from "@/lib/data-adapters"
 
 export default function HomePage() {
@@ -38,9 +38,18 @@ export default function HomePage() {
                 <TrendingUp className="h-4 w-4" />
                 Trending
               </TabsTrigger>
-              <TabsTrigger value="featured">⭐ Featured</TabsTrigger>
-              <TabsTrigger value="new">🆕 New</TabsTrigger>
-              <TabsTrigger value="free">🆓 Free</TabsTrigger>
+              <TabsTrigger value="featured" className="flex items-center gap-2">
+                <Star className="h-4 w-4" />
+                Featured
+              </TabsTrigger>
+              <TabsTrigger value="new" className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4" />
+                New
+              </TabsTrigger>
+              <TabsTrigger value="free" className="flex items-center gap-2">
+                <Zap className="h-4 w-4" />
+                Free
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="trending" className="space-y-8">

@@ -35,6 +35,7 @@ import {
   Sparkles,
   Upload,
   Wand2,
+  Shuffle,
 } from "lucide-react"
 
 export function Playground() {
@@ -114,7 +115,7 @@ export function Playground() {
     if (!selectedStyle) {
       toast({
         title: "No style selected",
-        description: "Please select a style before generating.",
+        description: "Please select a style before remixing.",
         variant: "destructive",
       })
       return
@@ -199,7 +200,7 @@ export function Playground() {
         <div className="lg:col-span-2 space-y-6">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="generate">Generate</TabsTrigger>
+              <TabsTrigger value="generate">Remix</TabsTrigger>
               <TabsTrigger value="history">History</TabsTrigger>
             </TabsList>
 
@@ -208,7 +209,7 @@ export function Playground() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Select a Style</CardTitle>
-                    <CardDescription>Choose a style to start generating images.</CardDescription>
+                    <CardDescription>Choose a style to start remixing images.</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <StyleSelector onStyleSelect={handleStyleSelect} />
@@ -222,7 +223,7 @@ export function Playground() {
                         <CardTitle>Selected Style: {selectedStyle.title}</CardTitle>
                         <CardDescription>
                           Created by {selectedStyle.creator.handle} • {selectedStyle.stats.generations.toLocaleString()}{" "}
-                          generations
+                          remixes
                         </CardDescription>
                       </div>
                       <Button variant="outline" size="sm" onClick={() => setSelectedStyle(null)}>
@@ -252,8 +253,8 @@ export function Playground() {
 
                   <Card>
                     <CardHeader>
-                      <CardTitle>Generation Settings</CardTitle>
-                      <CardDescription>Configure your image generation settings.</CardDescription>
+                      <CardTitle>Remix Settings</CardTitle>
+                      <CardDescription>Configure your image remix settings.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="space-y-4">
@@ -264,7 +265,7 @@ export function Playground() {
                           <div className="mt-1.5 relative">
                             <Textarea
                               id="prompt"
-                              placeholder="Describe what you want to generate..."
+                              placeholder="Describe what you want to remix..."
                               value={prompt}
                               onChange={handlePromptChange}
                               className="min-h-[100px] pr-20"
@@ -440,12 +441,12 @@ export function Playground() {
                         {isGenerating ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Generating...
+                            Remixing...
                           </>
                         ) : (
                           <>
-                            <Wand2 className="mr-2 h-4 w-4" />
-                            Generate Image
+                            <Shuffle className="mr-2 h-4 w-4" />
+                            Remix Image
                           </>
                         )}
                       </Button>
@@ -457,7 +458,7 @@ export function Playground() {
                   {generatedImage && !isGenerating && (
                     <Card>
                       <CardHeader>
-                        <CardTitle>Generated Result</CardTitle>
+                        <CardTitle>Remixed Result</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <div className="relative aspect-square overflow-hidden rounded-lg border border-border">
@@ -482,7 +483,7 @@ export function Playground() {
                         <div className="flex gap-2">
                           <Button variant="outline" size="sm" onClick={handleRegenerate}>
                             <RefreshCw className="h-4 w-4 mr-2" />
-                            Regenerate
+                            Remix Again
                           </Button>
                           <Button variant="outline" size="sm" onClick={handleDownload}>
                             <Download className="h-4 w-4 mr-2" />
@@ -502,8 +503,8 @@ export function Playground() {
             <TabsContent value="history" className="mt-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Generation History</CardTitle>
-                  <CardDescription>Your recent generations in the playground.</CardDescription>
+                  <CardTitle>Remix History</CardTitle>
+                  <CardDescription>Your recent remixes in the playground.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <GenerationHistory history={generationHistory} />

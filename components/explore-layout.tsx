@@ -75,12 +75,6 @@ export function ExploreLayout({
                   <h3 className="font-medium mb-3">Price</h3>
                   <div className="space-y-2">
                     <div className="flex items-center">
-                      <input type="checkbox" id="free" className="mr-2" />
-                      <label htmlFor="free" className="text-sm">
-                        Free
-                      </label>
-                    </div>
-                    <div className="flex items-center">
                       <input type="checkbox" id="paid" className="mr-2" />
                       <label htmlFor="paid" className="text-sm">
                         Paid

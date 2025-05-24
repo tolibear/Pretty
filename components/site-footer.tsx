@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Logo } from "@/components/ui/logo"
 
 export function SiteFooter() {
   return (
@@ -6,7 +7,7 @@ export function SiteFooter() {
       <div className="container py-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold">Pretty.af</h3>
+            <Logo width={90} height={24} />
             <p className="text-sm text-muted-foreground">Generate on-brand AI images with styles from top creators.</p>
           </div>
           <div>
@@ -81,7 +82,7 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="mt-10 pt-6 border-t text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Pretty.af. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Pretty. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -1,3 +1,5 @@
+'use client'
+
 import { ImageUrls } from "@/lib/image-service"
 
 export default function TestImagesPage() {

@@ -22,6 +22,7 @@ import { ImageUploader } from "@/components/image-uploader"
 import { StylePreview } from "@/components/style-preview"
 import { AlertCircle, ArrowLeft, Check, Info, Loader2, Trash2, X } from "lucide-react"
 import Link from "next/link"
+import { ImageUrls } from "@/lib/image-service"
 
 const styleFormSchema = z.object({
   title: z.string().min(3, {
@@ -485,7 +486,7 @@ export function StyleEditor() {
                               {exampleImages.map((image, index) => (
                                 <div key={index} className="relative group">
                                   <img
-                                    src={image || "/placeholder.svg"}
+                                    src={image || ImageUrls.placeholder(300, 300, `Example ${index + 1}`)}
                                     alt={`Example ${index + 1}`}
                                     className="w-full aspect-square object-cover rounded-md"
                                   />
@@ -557,7 +558,7 @@ export function StyleEditor() {
                           <div className="flex items-center gap-4 mb-4">
                             {coverImage ? (
                               <img
-                                src={coverImage || "/placeholder.svg"}
+                                src={coverImage || ImageUrls.placeholder(80, 80, "Cover")}
                                 alt="Cover"
                                 className="w-20 h-20 object-cover rounded-md"
                               />
@@ -590,7 +591,7 @@ export function StyleEditor() {
                             {exampleImages.slice(0, 3).map((image, index) => (
                               <img
                                 key={index}
-                                src={image || "/placeholder.svg"}
+                                src={image || ImageUrls.placeholder(150, 150, `Example ${index + 1}`)}
                                 alt={`Example ${index + 1}`}
                                 className="w-full aspect-square object-cover rounded-md"
                               />
@@ -767,17 +768,18 @@ export function StyleEditor() {
   )
 }
 
+// Constants for form options
 const coins = [
   { value: "USDC", label: "USDC" },
-  { value: "ETH", label: "ETH" },
-  { value: "PENGU", label: "PENGU" },
+  { value: "ETH", label: "Ethereum (ETH)" },
+  { value: "PENGU", label: "Pudgy Penguins (PENGU)" },
 ]
 
 const aspectRatios = [
-  { value: "1:1", label: "1:1 (Square)" },
-  { value: "4:5", label: "4:5 (Portrait)" },
-  { value: "5:4", label: "5:4 (Landscape)" },
-  { value: "16:9", label: "16:9 (Widescreen)" },
-  { value: "9:16", label: "9:16 (Vertical)" },
-  { value: "3:2", label: "3:2 (Classic)" },
+  { value: "1:1", label: "Square (1:1)" },
+  { value: "4:5", label: "Portrait (4:5)" },
+  { value: "16:9", label: "Landscape (16:9)" },
+  { value: "3:4", label: "Portrait (3:4)" },
+  { value: "9:16", label: "Vertical (9:16)" },
+  { value: "2:3", label: "Portrait (2:3)" },
 ]

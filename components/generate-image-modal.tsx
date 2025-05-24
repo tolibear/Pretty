@@ -19,6 +19,7 @@ import { Upload, Sparkles, AlertCircle, Loader2, X, Image as ImageIcon, Zap, Set
 import { GeneratorModal } from "@/components/generator-modal"
 import { ConnectWallet } from "@/components/wallet/connect-wallet"
 import { toast } from "sonner"
+import { ImageUrls } from "@/lib/image-service"
 
 interface GenerateImageModalProps {
   isOpen: boolean
@@ -168,7 +169,7 @@ export function GenerateImageModal({ isOpen, onClose, style }: GenerateImageModa
                 ) : (
                   <div className="relative">
                     <img
-                      src={uploadedImage || "/placeholder.svg"}
+                      src={uploadedImage || ImageUrls.placeholder(400, 192, "Reference Image")}
                       alt="Uploaded reference"
                       className="w-full h-48 object-contain rounded-lg border border-border bg-muted"
                     />

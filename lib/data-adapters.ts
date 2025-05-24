@@ -12,6 +12,7 @@ export function adaptStyleForCard(style: typeof MockData.styles.trending[0]) {
   return {
     id: style.id,
     title: style.title,
+    description: style.description,
     creator: style.creator.handle,
     likes: style.totalLikes,
     coverImage: style.coverImageUrl,
@@ -28,19 +29,40 @@ export function adaptStyleForCard(style: typeof MockData.styles.trending[0]) {
 
 // Creator data adapter for CreatorSpotlight component
 export function adaptCreatorForSpotlight(creator: typeof MockData.users.creators[0]) {
+  // Find the creator's most popular style from all styles
+  const allStyles = [
+    ...MockData.styles.trending,
+    ...MockData.styles.featured,
+    ...MockData.styles.free
+  ]
+  
+  const creatorStyles = allStyles.filter(style => style.creator.id === creator.id)
+  const featuredStyle = creatorStyles.length > 0 
+    ? creatorStyles.sort((a, b) => b.totalLikes - a.totalLikes)[0] // Most liked style
+    : {
+        id: 'default-style',
+        title: 'Featured Style',
+        coverImageUrl: creator.avatarUrl,
+        totalLikes: 0,
+        totalGenerations: 0
+      }
+
   return {
     id: creator.id,
     name: creator.displayName,
     handle: creator.handle,
     avatar: creator.avatarUrl,
-    earnings: `${creator.totalEarnings.toLocaleString()} USDC`,
-    styles: creator.totalStyles,
-    isVerified: creator.isVerified,
+    bio: creator.bio,
+    verified: creator.isVerified,
     followers: creator.followers,
-    rating: creator.rating,
-    specialties: creator.specialties,
-    isTopCreator: creator.totalEarnings > 10000, // Top creator if earnings > 10k
-    monthlyGrowth: Math.floor(Math.random() * 30) + 10 // Random growth 10-40%
+    totalGenerations: creator.totalGenerations,
+    featuredStyle: {
+      id: featuredStyle.id,
+      title: featuredStyle.title,
+      image: featuredStyle.coverImageUrl,
+      likes: featuredStyle.totalLikes,
+      generations: featuredStyle.totalGenerations,
+    }
   }
 }
 

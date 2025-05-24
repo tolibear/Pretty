@@ -144,7 +144,7 @@ export function GeneratorModal({ isOpen, onClose, style }: GeneratorModalProps) 
                   <div className="mt-4">
                     <div className="relative aspect-square overflow-hidden rounded-lg border border-border">
                       <img
-                        src={generatedImage || "/placeholder.svg"}
+                        src={generatedImage || ImageUrls.placeholder(400, 400, "Generated Image")}
                         alt="Made image"
                         className="object-cover w-full h-full"
                       />

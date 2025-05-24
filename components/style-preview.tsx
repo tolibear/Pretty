@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { ImageUrls } from "@/lib/image-service"
 
 interface StylePreviewProps {
   title: string
@@ -14,7 +15,7 @@ export function StylePreview({ title, description, coverImage, examples, tags }:
     <div className="space-y-4">
       <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted">
         {coverImage ? (
-          <img src={coverImage || "/placeholder.svg"} alt={title} className="w-full h-full object-cover" />
+          <img src={coverImage || ImageUrls.placeholder(400, 300, title)} alt={title} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <span className="text-muted-foreground">No cover image</span>
@@ -44,7 +45,7 @@ export function StylePreview({ title, description, coverImage, examples, tags }:
           {examples.slice(0, 3).map((example, index) => (
             <div key={index} className="aspect-square rounded-md overflow-hidden bg-muted">
               <img
-                src={example || "/placeholder.svg"}
+                src={example || ImageUrls.placeholder(150, 150, `Example ${index + 1}`)}
                 alt={`Example ${index + 1}`}
                 className="w-full h-full object-cover"
               />

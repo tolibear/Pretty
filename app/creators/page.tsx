@@ -8,6 +8,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { CheckCircle2, ChevronRight, Sparkles, TrendingUp, Wallet, Zap } from "lucide-react"
+import { ImageUrls } from "@/lib/image-service"
+// Import creator dashboard components
+import { EarningsOverview } from "@/components/earnings-overview"
+import { StylesTable } from "@/components/styles-table"
+import { WithdrawalHistory } from "@/components/withdrawal-history"
+import { AnalyticsCharts } from "@/components/analytics-charts"
+// Import the client component
+import { CreatorDashboardPreview } from "@/components/creator-dashboard-preview"
 
 export const metadata: Metadata = {
   title: "Become a Creator - Pretty.af",
@@ -130,172 +138,7 @@ export default function CreatorsPage() {
         </section>
 
         {/* Creator Dashboard Preview */}
-        <section className="bg-muted py-20">
-          <div className="container">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <Badge className="mb-4">Creator Dashboard</Badge>
-                <h2 className="text-3xl font-bold mb-6">Powerful tools to manage your styles</h2>
-                <p className="text-muted-foreground mb-8">
-                  Our comprehensive creator dashboard gives you everything you need to create, manage, and optimize your
-                  styles for maximum earnings.
-                </p>
-
-                <Tabs defaultValue="overview" className="w-full">
-                  <TabsList className="mb-4">
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="styles">Styles</TabsTrigger>
-                    <TabsTrigger value="earnings">Earnings</TabsTrigger>
-                    <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="overview">
-                    <div className="space-y-4">
-                      <div className="flex items-start gap-4">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                          <TrendingUp className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Real-time Performance</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Track your styles' performance with real-time metrics on creations, revenue, and conversion
-                            rates.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-4">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                          <Zap className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Activity Feed</h3>
-                          <p className="text-sm text-muted-foreground">
-                            See a chronological feed of all activity related to your styles, including creations and
-                            earnings.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="styles">
-                    <div className="space-y-4">
-                      <div className="flex items-start gap-4">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                          <Sparkles className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Style Management</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Create, edit, and manage all your styles from one central location. Clone successful styles
-                            to iterate quickly.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-4">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                          <CheckCircle2 className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Performance Insights</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Get detailed insights into which styles are performing best and why, so you can optimize
-                            your portfolio.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="earnings">
-                    <div className="space-y-4">
-                      <div className="flex items-start gap-4">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                          <Wallet className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Revenue Tracking</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Track your earnings across different cryptocurrencies with detailed breakdowns by style and
-                            time period.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-4">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                          <TrendingUp className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Withdrawal Management</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Easily withdraw your earnings to your wallet with our seamless integration with Abstract
-                            Global Wallet.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="analytics">
-                    <div className="space-y-4">
-                      <div className="flex items-start gap-4">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                          <TrendingUp className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Detailed Analytics</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Access comprehensive analytics on views, conversions, and revenue to optimize your styles
-                            for maximum earnings.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-4">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                          <Sparkles className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Performance Optimization</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Get AI-powered recommendations to improve your styles' performance and increase your
-                            earnings.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-
-                <div className="mt-8">
-                  <Button asChild>
-                    <Link href="/dashboard">
-                      Explore Dashboard <ChevronRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-
-              <div className="relative">
-                <img
-                  src="/images/dashboard-preview.png"
-                  alt="Creator Dashboard"
-                  className="rounded-lg border border-border shadow-xl"
-                />
-                <div className="absolute -bottom-6 -right-6 bg-card rounded-lg p-4 shadow-lg border border-border">
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
-                      <p className="text-sm text-muted-foreground">Total Earnings</p>
-                      <p className="text-2xl font-bold">$5,231.89</p>
-                    </div>
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <TrendingUp className="h-6 w-6 text-primary" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <CreatorDashboardPreview />
 
         {/* Success Stories */}
         <section className="container py-20">
@@ -311,7 +154,7 @@ export default function CreatorsPage() {
               <Card key={story.name} className="overflow-hidden">
                 <div className="aspect-[3/2] overflow-hidden">
                   <img
-                    src={story.styleImage || "/placeholder.svg"}
+                    src={story.styleImage || ImageUrls.styleImage(story.name + " Style", "cyberpunk")}
                     alt={`${story.name}'s style`}
                     className="w-full h-full object-cover"
                   />
@@ -319,7 +162,7 @@ export default function CreatorsPage() {
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-4 mb-4">
                     <Avatar className="h-12 w-12 border-2 border-background">
-                      <AvatarImage src={story.avatar || "/placeholder.svg"} alt={story.name} />
+                      <AvatarImage src={story.avatar || ImageUrls.creatorAvatar(story.handle.replace("@", ""))} alt={story.name} />
                       <AvatarFallback>{story.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
@@ -405,9 +248,9 @@ const successStories = [
   {
     name: "Alex Rivera",
     handle: "@neonartist",
-    avatar: "/images/avatar-1.png",
+    avatar: ImageUrls.creatorAvatar("neonartist"),
     verified: true,
-    styleImage: "/images/cyberpunk-neon.png",
+    styleImage: ImageUrls.styleImage("Cyberpunk Neon", "cyberpunk"),
     quote:
       "I've been able to make over $12,000 in passive income by sharing my cyberpunk styles on Pretty.af. The platform makes it incredibly easy to reach users.",
     earnings: "$12,450",
@@ -417,9 +260,9 @@ const successStories = [
   {
     name: "Jamie Chen",
     handle: "@retrovisuals",
-    avatar: "/images/avatar-2.png",
+    avatar: ImageUrls.creatorAvatar("retrovisuals"),
     verified: true,
-    styleImage: "/images/vintage-film.png",
+    styleImage: ImageUrls.styleImage("Vintage Film", "vintage"),
     quote:
       "Pretty.af has allowed me to monetize my passion for vintage aesthetics. The 42% revenue share is incredibly generous compared to other platforms.",
     earnings: "$9,320",
@@ -429,9 +272,9 @@ const successStories = [
   {
     name: "Taylor Kim",
     handle: "@pixelmaster",
-    avatar: "/images/avatar-4.png",
+    avatar: ImageUrls.creatorAvatar("pixelmaster"),
     verified: true,
-    styleImage: "/images/pixel-art.png",
+    styleImage: ImageUrls.styleImage("Pixel Art", "pixel"),
     quote:
       "As a pixel artist, I've found a new revenue stream through Pretty.af. The analytics tools help me understand what users want and optimize my styles.",
     earnings: "$7,890",

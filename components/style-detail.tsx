@@ -17,7 +17,7 @@ import {
   Download,
   Copy,
   ExternalLink,
-  Play,
+  Shuffle,
   Users,
   Zap,
   Shield,
@@ -40,555 +40,417 @@ interface StyleDetailProps {
 
 export function StyleDetail({ style }: StyleDetailProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
   const [likesCount, setLikesCount] = useState(style.stats.likes)
+  const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false)
 
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % style.examples.length)
-  }
-
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + style.examples.length) % style.examples.length)
-  }
-
-  const toggleLike = () => {
+  const handleLike = () => {
     setIsLiked(!isLiked)
     setLikesCount((prev: number) => isLiked ? prev - 1 : prev + 1)
     toast.success(isLiked ? "Removed from favorites" : "Added to favorites")
   }
 
-  const handleShare = async () => {
-    try {
-      await navigator.share({
-        title: style.title,
-        text: style.description,
-        url: window.location.href,
-      })
-    } catch (err) {
-      // Fallback to copying URL
-      navigator.clipboard.writeText(window.location.href)
-      toast.success("Link copied to clipboard")
-    }
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href)
+    toast.success("Link copied to clipboard")
   }
 
-  const handleCopyPrompt = (prompt: string) => {
-    navigator.clipboard.writeText(prompt)
-    toast.success("Prompt copied to clipboard")
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === style.exampleImages.length - 1 ? 0 : prev + 1
+    )
+  }
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? style.exampleImages.length - 1 : prev - 1
+    )
   }
 
   return (
-    <div className="container py-6 md:py-8 lg:py-12">
-      {/* Breadcrumb */}
-      <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
-        <Link href="/" className="hover:text-foreground">Home</Link>
-        <span>/</span>
-        <Link href="/explore" className="hover:text-foreground">Explore</Link>
-        <span>/</span>
-        <span className="text-foreground">{style.title}</span>
-      </nav>
-
-      <div className="flex flex-col xl:flex-row gap-8 lg:gap-12">
-        {/* Left column - Image carousel and details */}
-        <div className="xl:w-2/3">
-          {/* Main image carousel */}
-          <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted shadow-lg">
-            <img
-              src={style.examples[currentImageIndex] || ImageUrls.placeholder(800, 600, style.title)}
-              alt={`${style.title} example ${currentImageIndex + 1}`}
-              className="object-cover w-full h-full"
-            />
-
-            {/* Navigation arrows */}
-            {style.examples.length > 1 && (
-              <>
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="absolute left-3 top-1/2 -translate-y-1/2 bg-background/90 backdrop-blur-sm hover:bg-background shadow-lg"
-                  onClick={prevImage}
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                  <span className="sr-only">Previous image</span>
-                </Button>
-
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 bg-background/90 backdrop-blur-sm hover:bg-background shadow-lg"
-                  onClick={nextImage}
-                >
-                  <ChevronRight className="h-5 w-5" />
-                  <span className="sr-only">Next image</span>
-                </Button>
-              </>
-            )}
-
-            {/* Image counter and quality badge */}
-            <div className="absolute bottom-3 right-3 flex gap-2">
-              <Badge className="bg-background/90 text-foreground border-0">
-                {currentImageIndex + 1} / {style.examples.length}
-              </Badge>
-              <Badge className="bg-primary/90 text-primary-foreground border-0">
-                <Sparkles className="h-3 w-3 mr-1" />
-                Premium Quality
-              </Badge>
-            </div>
-
-            {/* Quick actions overlay */}
-            <div className="absolute top-3 right-3 flex gap-2">
-              <Button
-                variant="secondary"
-                size="icon"
-                className="bg-background/90 backdrop-blur-sm hover:bg-background shadow-lg"
-                onClick={handleShare}
-              >
-                <Share2 className="h-4 w-4" />
-                <span className="sr-only">Share style</span>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/explore" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+              <ChevronLeft className="h-4 w-4" />
+              Back to Explore
+            </Link>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" onClick={handleShare}>
+                <Share2 className="h-4 w-4 mr-2" />
+                Share
               </Button>
-              <Button
-                variant="secondary"
-                size="icon"
-                className={`bg-background/90 backdrop-blur-sm hover:bg-background shadow-lg ${
-                  isLiked ? "text-red-500" : ""
-                }`}
-                onClick={toggleLike}
+              <Button 
+                variant={isLiked ? "default" : "outline"} 
+                size="sm" 
+                onClick={handleLike}
               >
-                <Heart className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`} />
-                <span className="sr-only">Like style</span>
+                <Heart className={`h-4 w-4 mr-2 ${isLiked ? 'fill-current' : ''}`} />
+                {isLiked ? 'Liked' : 'Like'}
               </Button>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Thumbnail strip */}
-          {style.examples.length > 1 && (
-            <div className="flex gap-3 mt-4 overflow-x-auto pb-2">
-              {style.examples.map((example: string, index: number) => (
-                <button
-                  key={index}
-                  className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition-all ${
-                    currentImageIndex === index 
-                      ? "ring-2 ring-primary shadow-lg" 
-                      : "opacity-70 hover:opacity-100 hover:scale-105"
-                  }`}
-                  onClick={() => setCurrentImageIndex(index)}
-                >
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Image Gallery */}
+            <Card>
+              <CardContent className="p-0">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-muted">
                   <img
-                    src={example || ImageUrls.placeholder(80, 80, `${style.title} thumbnail`)}
-                    alt={`Thumbnail ${index + 1}`}
+                    src={style.exampleImages[currentImageIndex] || ImageUrls.placeholder(800, 600, `${style.title} Example ${currentImageIndex + 1}`)}
+                    alt={`${style.title} example ${currentImageIndex + 1}`}
                     className="object-cover w-full h-full"
                   />
-                </button>
-              ))}
-            </div>
-          )}
+                  
+                  {/* Navigation */}
+                  {style.exampleImages.length > 1 && (
+                    <>
+                      <Button
+                        variant="secondary"
+                        size="icon"
+                        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/60 backdrop-blur-sm hover:bg-black/80 border-0"
+                        onClick={prevImage}
+                      >
+                        <ChevronLeft className="h-4 w-4 text-white" />
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="icon"
+                        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/60 backdrop-blur-sm hover:bg-black/80 border-0"
+                        onClick={nextImage}
+                      >
+                        <ChevronRight className="h-4 w-4 text-white" />
+                      </Button>
+                    </>
+                  )}
 
-          {/* Style Information Tabs */}
-          <div className="mt-8">
-            <Tabs defaultValue="details" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="details">Details</TabsTrigger>
+                  {/* Image Counter */}
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                    <div className="bg-black/60 backdrop-blur-sm rounded-full px-3 py-1 text-white text-sm">
+                      {currentImageIndex + 1} / {style.exampleImages.length}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Thumbnail Navigation */}
+                {style.exampleImages.length > 1 && (
+                  <div className="p-4">
+                    <div className="flex gap-2 overflow-x-auto">
+                      {style.exampleImages.map((image: string, index: number) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors ${
+                            index === currentImageIndex ? 'border-primary' : 'border-transparent'
+                          }`}
+                        >
+                          <img
+                            src={image || ImageUrls.placeholder(64, 64, `Thumb ${index + 1}`)}
+                            alt={`Thumbnail ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Style Information */}
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="examples">Examples</TabsTrigger>
                 <TabsTrigger value="reviews">Reviews</TabsTrigger>
+                <TabsTrigger value="creator">Creator</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="details" className="space-y-6 mt-6">
+              <TabsContent value="overview" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <MessageSquare className="h-5 w-5" />
-                      Input Requirements
-                    </CardTitle>
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <CardTitle className="text-2xl">{style.title}</CardTitle>
+                          {style.isVerified && (
+                            <Badge variant="secondary" className="gap-1">
+                              <CheckCircle2 className="h-3 w-3" />
+                              Verified
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-muted-foreground">{style.description}</p>
+                      </div>
+                    </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                        <div className={`p-2 rounded-full ${
-                          style.inputRequirements.textPromptRequired 
-                            ? "bg-green-100 text-green-600" 
-                            : "bg-gray-100 text-gray-600"
-                        }`}>
-                          <MessageSquare className="h-4 w-4" />
+                    {/* Creator Info */}
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={style.creator.avatar || ImageUrls.creatorAvatar(style.creator.handle)} alt={style.creator.displayName} />
+                        <AvatarFallback>{style.creator.displayName.split(' ').map((n: string) => n[0]).join('')}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium">{style.creator.displayName}</p>
+                          {style.creator.isVerified && (
+                            <CheckCircle2 className="h-4 w-4 text-primary" />
+                          )}
                         </div>
-                        <div>
-                          <p className="font-medium text-sm">Text Prompt</p>
-                          <p className="text-xs text-muted-foreground">
-                            {style.inputRequirements.textPromptRequired ? "Required" : "Optional"}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                        <div className={`p-2 rounded-full ${
-                          style.inputRequirements.imageInputAllowed 
-                            ? "bg-blue-100 text-blue-600" 
-                            : "bg-gray-100 text-gray-600"
-                        }`}>
-                          <ImageIcon className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <p className="font-medium text-sm">Reference Image</p>
-                          <p className="text-xs text-muted-foreground">
-                            {style.inputRequirements.imageInputAllowed ? "Supported" : "Not supported"}
-                          </p>
-                        </div>
+                        <p className="text-sm text-muted-foreground">{style.creator.handle}</p>
                       </div>
                     </div>
 
-                    <div>
-                      <p className="text-sm font-medium mb-2">Supported Aspect Ratios</p>
-                      <div className="flex flex-wrap gap-2">
-                        {style.inputRequirements.supportedRatios.map((ratio: string) => (
-                          <Badge key={ratio} variant="outline" className="text-xs">
-                            {ratio}
-                          </Badge>
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {style.tags.map((tag: string) => (
+                        <Badge key={tag} variant="secondary">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    {/* Example Prompts */}
+                    <div className="space-y-3">
+                      <h4 className="font-medium">Example Prompts</h4>
+                      <div className="space-y-2">
+                        {style.examplePrompts.map((prompt: string, index: number) => (
+                          <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                            <p className="text-sm flex-1">{prompt}</p>
+                            <Button variant="ghost" size="sm" onClick={() => {
+                              navigator.clipboard.writeText(prompt)
+                              toast.success("Prompt copied to clipboard")
+                            }}>
+                              <Copy className="h-4 w-4" />
+                            </Button>
+                          </div>
                         ))}
                       </div>
                     </div>
                   </CardContent>
                 </Card>
+              </TabsContent>
 
+              <TabsContent value="examples">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Sparkles className="h-5 w-5" />
-                      Style Features
-                    </CardTitle>
+                    <CardTitle>Example Generations</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <Shield className="h-6 w-6 mx-auto mb-2 text-green-600" />
-                        <p className="text-xs font-medium">Verified</p>
-                        <p className="text-xs text-muted-foreground">Quality assured</p>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {style.exampleImages.map((image: string, index: number) => (
+                        <div key={index} className="aspect-square rounded-lg overflow-hidden bg-muted">
+                          <img
+                            src={image || ImageUrls.placeholder(300, 300, `Example ${index + 1}`)}
+                            alt={`Example ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="reviews">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Community Feedback</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-4">
+                        <div className="text-3xl font-bold">{likesCount.toLocaleString()}</div>
+                        <div className="flex-1">
+                          <p className="text-sm text-muted-foreground">Total likes from the community</p>
+                        </div>
                       </div>
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <Zap className="h-6 w-6 mx-auto mb-2 text-yellow-600" />
-                        <p className="text-xs font-medium">Fast</p>
-                        <p className="text-xs text-muted-foreground">~30 seconds</p>
-                      </div>
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <Award className="h-6 w-6 mx-auto mb-2 text-purple-600" />
-                        <p className="text-xs font-medium">Premium</p>
-                        <p className="text-xs text-muted-foreground">High resolution</p>
-                      </div>
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <Users className="h-6 w-6 mx-auto mb-2 text-blue-600" />
-                        <p className="text-xs font-medium">Popular</p>
-                        <p className="text-xs text-muted-foreground">5k+ uses</p>
+                      
+                      <div className="space-y-4">
+                        {/* Sample reviews */}
+                        <div className="border-b pb-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Avatar className="h-6 w-6">
+                              <AvatarFallback className="text-xs">JD</AvatarFallback>
+                            </Avatar>
+                            <span className="font-medium text-sm">John Doe</span>
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Amazing style! The results are consistently high quality and the prompts work perfectly.
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               </TabsContent>
 
-              <TabsContent value="examples" className="space-y-6 mt-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {mockExamplePrompts.map((example, index) => (
-                    <Card key={index} className="overflow-hidden">
-                      <div className="aspect-video relative">
-                        <img
-                          src={example.image}
-                          alt={example.prompt}
-                          className="object-cover w-full h-full"
-                        />
+              <TabsContent value="creator">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>About the Creator</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <Avatar className="h-16 w-16">
+                        <AvatarImage src={style.creator.avatar || ImageUrls.creatorAvatar(style.creator.handle)} alt={style.creator.displayName} />
+                        <AvatarFallback className="text-lg">{style.creator.displayName.split(' ').map((n: string) => n[0]).join('')}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="text-xl font-semibold">{style.creator.displayName}</h3>
+                          {style.creator.isVerified && (
+                            <CheckCircle2 className="h-5 w-5 text-primary" />
+                          )}
+                        </div>
+                        <p className="text-muted-foreground">{style.creator.handle}</p>
+                        <p className="text-sm text-muted-foreground mt-2">{style.creator.bio}</p>
                       </div>
-                      <CardContent className="p-4">
-                        <p className="text-sm mb-3 line-clamp-2">{example.prompt}</p>
-                        <div className="flex justify-between items-center">
-                          <Badge variant="secondary" className="text-xs">
-                            {example.ratio}
-                          </Badge>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleCopyPrompt(example.prompt)}
-                          >
-                            <Copy className="h-3 w-3 mr-1" />
-                            Copy
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
+                    </div>
 
-              <TabsContent value="reviews" className="space-y-6 mt-6">
-                <div className="space-y-4">
-                  {mockReviews.map((review, index) => (
-                    <Card key={index}>
-                      <CardContent className="p-4">
-                        <div className="flex items-start gap-3">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src={review.avatar} alt={review.name} />
-                            <AvatarFallback>{review.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <p className="font-medium text-sm">{review.name}</p>
-                              <div className="flex">
-                                {Array.from({ length: 5 }).map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    className={`h-3 w-3 ${
-                                      i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-                                    }`}
-                                  />
-                                ))}
-                              </div>
-                              <span className="text-xs text-muted-foreground">{review.date}</span>
-                            </div>
-                            <p className="text-sm text-muted-foreground">{review.comment}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div>
+                        <div className="text-2xl font-bold">{style.creator.stats.totalStyles}</div>
+                        <div className="text-sm text-muted-foreground">Styles</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold">{style.creator.stats.totalGenerations.toLocaleString()}</div>
+                        <div className="text-sm text-muted-foreground">Generations</div>
+                      </div>
+                      <div>
+                        <div className="text-2xl font-bold">{style.creator.stats.followers.toLocaleString()}</div>
+                        <div className="text-sm text-muted-foreground">Followers</div>
+                      </div>
+                    </div>
+
+                    <Button className="w-full" variant="outline">
+                      <Users className="h-4 w-4 mr-2" />
+                      Follow Creator
+                    </Button>
+                  </CardContent>
+                </Card>
               </TabsContent>
             </Tabs>
           </div>
-        </div>
 
-        {/* Right column - Style info and actions */}
-        <div className="xl:w-1/3 space-y-6">
-          {/* Style header */}
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-3">{style.title}</h1>
-            
-            {/* Creator info */}
-            <div className="flex items-center gap-3 mb-4">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={style.creator.avatar || ImageUrls.creatorAvatar(style.creator.handle.slice(1))} alt={style.creator.name} />
-                <AvatarFallback>{style.creator.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <Link
-                  href={`/creator/${style.creator.handle.substring(1)}`}
-                  className="font-medium hover:text-primary transition-colors flex items-center gap-1"
-                >
-                  {style.creator.name}
-                  {style.creator.verified && <CheckCircle2 className="h-4 w-4 text-primary" />}
-                </Link>
-                <p className="text-sm text-muted-foreground">{style.creator.handle}</p>
-              </div>
-              <Button variant="outline" size="sm" asChild>
-                <Link href={`/creator/${style.creator.handle.substring(1)}`}>
-                  <ExternalLink className="h-3 w-3 mr-1" />
-                  View Profile
-                </Link>
-              </Button>
-            </div>
-
-            <p className="text-muted-foreground leading-relaxed">{style.description}</p>
-          </div>
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {style.tags.map((tag: string) => (
-              <Badge key={tag} variant="secondary" className="hover:bg-primary hover:text-primary-foreground cursor-pointer">
-                #{tag}
-              </Badge>
-            ))}
-          </div>
-
-          {/* Stats */}
-          <Card>
-            <CardContent className="p-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center">
-                  <div className="flex items-center justify-center gap-1 text-red-500 mb-1">
-                    <Heart className="h-4 w-4 fill-current" />
-                    <span className="font-semibold">{likesCount.toLocaleString()}</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Likes</p>
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center gap-1 text-blue-500 mb-1">
-                    <Play className="h-4 w-4" />
-                    <span className="font-semibold">{style.stats.generations.toLocaleString()}</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Generations</p>
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center gap-1 text-yellow-500 mb-1">
-                    <Star className="h-4 w-4 fill-current" />
-                    <span className="font-semibold">4.8</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Rating</p>
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center gap-1 text-green-500 mb-1">
-                    <TrendingUp className="h-4 w-4" />
-                    <span className="font-semibold">+15%</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">This week</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Pricing */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span>Pricing</span>
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  <span>42% to creator</span>
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-3 gap-3">
-                {style.pricing.acceptedCoins.map((coin: string) => (
-                  <div key={coin} className="text-center p-3 bg-muted/50 rounded-lg">
-                    <div className="font-medium text-sm">{coin}</div>
-                    <div className="text-xs text-muted-foreground">{style.pricing.estimatedPrice[coin]}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg p-3">
-                <div className="flex items-center gap-2 text-green-700 dark:text-green-400 text-sm">
-                  <Zap className="h-4 w-4" />
-                  <span className="font-medium">5 free generations remaining</span>
-                </div>
-                <Progress value={50} className="mt-2 h-2" />
-                <p className="text-xs text-green-600 dark:text-green-500 mt-1">
-                  Use your free generations before connecting a wallet
-                </p>
-              </div>
-
-              <Button 
-                className="w-full" 
-                size="lg" 
-                onClick={() => setIsGenerateModalOpen(true)}
-              >
-                <Play className="h-4 w-4 mr-2" />
-                Generate Image
-              </Button>
-
-              <div className="text-center">
-                <p className="text-xs text-muted-foreground">
-                  Published {style.stats.published} • Last updated 3 days ago
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Creator's other styles */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">More from {style.creator.name}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {mockCreatorStyles.map((otherStyle, index) => (
-                <Link
-                  key={index}
-                  href={`/style/${otherStyle.id}`}
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors"
-                >
-                  <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted">
-                    <img
-                      src={otherStyle.image}
-                      alt={otherStyle.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">{otherStyle.title}</p>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <span>{otherStyle.likes} likes</span>
-                      <span>•</span>
-                      <span>{otherStyle.price}</span>
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Quick Stats */}
+            <Card>
+              <CardContent className="p-4">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 text-muted-foreground/60 mb-1">
+                      <Heart className="h-4 w-4 fill-current" />
+                      <span className="font-semibold">{likesCount.toLocaleString()}</span>
                     </div>
+                    <p className="text-xs text-muted-foreground">Likes</p>
                   </div>
-                </Link>
-              ))}
-            </CardContent>
-          </Card>
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 text-muted-foreground/60 mb-1">
+                      <Shuffle className="h-4 w-4" />
+                      <span className="font-semibold">{style.stats.generations.toLocaleString()}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">Remixes</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 text-muted-foreground/60 mb-1">
+                      <TrendingUp className="h-4 w-4" />
+                      <span className="font-semibold">+15%</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">This week</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Pricing */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <span>Pricing</span>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    <span>42% to creator</span>
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-3 gap-3">
+                  {style.pricing.acceptedCoins.map((coin: string) => (
+                    <div key={coin} className="text-center p-3 bg-muted/50 rounded-lg">
+                      <div className="font-medium text-sm">{coin}</div>
+                      <div className="text-xs text-muted-foreground">{style.pricing.estimatedPrice[coin]}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg p-3">
+                  <div className="flex items-center gap-2 text-green-700 dark:text-green-400 text-sm">
+                    <Zap className="h-4 w-4" />
+                    <span className="font-medium">5 free generations remaining</span>
+                  </div>
+                  <Progress value={50} className="mt-2 h-2" />
+                  <p className="text-xs text-green-600 dark:text-green-500 mt-1">
+                    Use your free generations before connecting a wallet
+                  </p>
+                </div>
+
+                <Button 
+                  className="w-full" 
+                  size="lg" 
+                  onClick={() => setIsGenerateModalOpen(true)}
+                >
+                  <Shuffle className="h-4 w-4 mr-2" />
+                  Remix Style
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Creator's Other Styles */}
+            <Card>
+              <CardHeader>
+                <CardTitle>More from {style.creator.displayName}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {style.creator.otherStyles.map((otherStyle: any) => (
+                  <Link key={otherStyle.id} href={`/style/${otherStyle.id}`} className="block">
+                    <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                      <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                        <img
+                          src={otherStyle.coverImage || ImageUrls.placeholder(48, 48, otherStyle.title)}
+                          alt={otherStyle.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate">{otherStyle.title}</p>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <span>{otherStyle.generations} remixes</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
 
-      <GenerateImageModal 
-        isOpen={isGenerateModalOpen} 
-        onClose={() => setIsGenerateModalOpen(false)} 
-        style={style} 
+      <GenerateImageModal
+        isOpen={isGenerateModalOpen}
+        onClose={() => setIsGenerateModalOpen(false)}
+        style={style}
       />
     </div>
   )
 }
-
-// Mock data for enhanced features
-const mockExamplePrompts = [
-  {
-    prompt: "A futuristic cityscape at night with neon lights reflecting on wet streets",
-    image: "/images/cyberpunk-example-1.png",
-    ratio: "16:9"
-  },
-  {
-    prompt: "Cyberpunk character with glowing implants in a dark alley",
-    image: "/images/cyberpunk-example-2.png",
-    ratio: "4:5"
-  },
-  {
-    prompt: "Neon-lit motorcycle speeding through a tunnel",
-    image: "/images/cyberpunk-example-3.png",
-    ratio: "1:1"
-  },
-  {
-    prompt: "High-tech laboratory with holographic displays",
-    image: "/images/cyberpunk-example-4.png",
-    ratio: "16:9"
-  }
-]
-
-const mockReviews = [
-  {
-    name: "Sarah Chen",
-    avatar: "/images/user-1.png",
-    rating: 5,
-    date: "2 days ago",
-    comment: "Amazing style! The neon effects are exactly what I was looking for. Generated 10+ images and they all turned out fantastic."
-  },
-  {
-    name: "Mike Rodriguez",
-    avatar: "/images/user-2.png",
-    rating: 5,
-    date: "1 week ago",
-    comment: "Perfect for my cyberpunk project. The quality is consistently high and the style captures that retro-futuristic vibe perfectly."
-  },
-  {
-    name: "Emma Thompson",
-    avatar: "/images/user-3.png",
-    rating: 4,
-    date: "2 weeks ago",
-    comment: "Great style overall. Sometimes the neon effects can be a bit overwhelming, but adjusting the prompt helps. Definitely recommend!"
-  }
-]
-
-const mockCreatorStyles = [
-  {
-    id: "2",
-    title: "Retro Synthwave",
-    image: "/images/synthwave.png",
-    likes: "892",
-    price: "0.008 ETH"
-  },
-  {
-    id: "3",
-    title: "Neon Portraits",
-    image: "/images/neon-portrait.png",
-    likes: "654",
-    price: "0.012 ETH"
-  },
-  {
-    id: "4",
-    title: "Cyber Architecture",
-    image: "/images/cyber-arch.png",
-    likes: "543",
-    price: "0.015 ETH"
-  }
-]

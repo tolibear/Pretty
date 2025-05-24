@@ -5,23 +5,25 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from "@/lib/auth-context"
 import type { Metadata } from "next"
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Pretty.af - AI-Powered Image Generation",
+  title: "Pretty - AI-Powered Image Generation",
   description: "Generate on-brand AI images with styles from top creators",
   openGraph: {
-    title: "Pretty.af - AI-Powered Image Generation",
+    title: "Pretty - AI-Powered Image Generation",
     description: "Generate on-brand AI images with styles from top creators",
     url: "https://pretty.af",
-    siteName: "Pretty.af",
+    siteName: "Pretty",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Pretty.af - AI-Powered Image Generation",
+        alt: "Pretty - AI-Powered Image Generation",
       },
     ],
     locale: "en_US",

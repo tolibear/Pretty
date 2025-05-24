@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { ExploreLayout } from "@/components/explore-layout"
 import { notFound } from "next/navigation"
+import { ImageUrls } from "@/lib/image-service"
 
 interface CategoryPageProps {
   params: {
@@ -44,7 +45,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       styles={categoryStyles}
     >
       <div className="relative aspect-[3/1] overflow-hidden rounded-xl mb-8">
-        <img src={category.image || "/placeholder.svg"} alt={category.name} className="w-full h-full object-cover" />
+        <img src={category.image || ImageUrls.categoryBanner(category.name)} alt={category.name} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex items-center p-8">
           <div className="text-white max-w-md">
             <h2 className="text-3xl font-bold mb-2">{category.name}</h2>
@@ -62,7 +63,7 @@ const allCategories = [
     name: "Abstract",
     slug: "abstract",
     count: 42,
-    image: "/images/abstract-waves.png",
+    image: ImageUrls.categoryBanner("Abstract"),
     description:
       "Non-representational styles focusing on shapes, colors, and textures rather than recognizable objects.",
   },
@@ -70,21 +71,21 @@ const allCategories = [
     name: "Anime",
     slug: "anime",
     count: 38,
-    image: "/images/anime-portrait.png",
+    image: ImageUrls.categoryBanner("Anime"),
     description: "Japanese-inspired animation styles with distinctive aesthetics and character designs.",
   },
   {
     name: "Cyberpunk",
     slug: "cyberpunk",
     count: 24,
-    image: "/images/cyberpunk-neon.png",
+    image: ImageUrls.categoryBanner("Cyberpunk"),
     description: "Futuristic styles featuring high-tech, neon aesthetics in dystopian urban environments.",
   },
   {
     name: "Fantasy",
     slug: "fantasy",
     count: 56,
-    image: "/images/surreal-dream.png",
+    image: ImageUrls.categoryBanner("Fantasy"),
     description:
       "Magical and otherworldly styles featuring mythical creatures, enchanted landscapes, and supernatural elements.",
   },
@@ -92,35 +93,35 @@ const allCategories = [
     name: "Minimalist",
     slug: "minimalist",
     count: 19,
-    image: "/images/minimal-lines.png",
+    image: ImageUrls.categoryBanner("Minimalist"),
     description: "Clean, simple styles with reduced elements, focusing on essential forms and limited color palettes.",
   },
   {
     name: "Pixel Art",
     slug: "pixel-art",
     count: 31,
-    image: "/images/pixel-art.png",
+    image: ImageUrls.categoryBanner("Pixel Art"),
     description: "Retro digital art styles created with pixel-by-pixel precision, reminiscent of classic video games.",
   },
   {
     name: "Retro",
     slug: "retro",
     count: 27,
-    image: "/images/vintage-film.png",
+    image: ImageUrls.categoryBanner("Retro"),
     description: "Nostalgic styles inspired by past decades, featuring vintage aesthetics and classic design elements.",
   },
   {
     name: "Sci-Fi",
     slug: "sci-fi",
     count: 35,
-    image: "/images/scifi-world.png",
+    image: ImageUrls.categoryBanner("Sci-Fi"),
     description: "Futuristic styles exploring advanced technology, space exploration, and alien worlds.",
   },
   {
     name: "Watercolor",
     slug: "watercolor",
     count: 22,
-    image: "/images/watercolor.png",
+    image: ImageUrls.categoryBanner("Watercolor"),
     description:
       "Artistic styles mimicking traditional watercolor painting techniques with soft edges and transparent colors.",
   },
@@ -132,7 +133,7 @@ const allStyles = [
     title: "Neon Dreams",
     creator: "@neonartist",
     likes: 1243,
-    coverImage: "/images/cyberpunk-neon.png",
+    coverImage: ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
     tags: ["cyberpunk", "neon", "city", "futuristic", "night"],
   },
   {
@@ -140,7 +141,7 @@ const allStyles = [
     title: "Vintage Film",
     creator: "@retrovisuals",
     likes: 982,
-    coverImage: "/images/vintage-film.png",
+    coverImage: ImageUrls.styleImage("Vintage Film", "vintage"),
     tags: ["vintage", "film", "retro", "analog", "nostalgic"],
   },
   {
@@ -148,7 +149,7 @@ const allStyles = [
     title: "Abstract Waves",
     creator: "@wavecreator",
     likes: 756,
-    coverImage: "/images/abstract-waves.png",
+    coverImage: ImageUrls.styleImage("Abstract Waves", "abstract"),
     tags: ["abstract", "waves", "fluid", "colorful", "modern"],
   },
   {
@@ -156,7 +157,7 @@ const allStyles = [
     title: "Pixel Art",
     creator: "@pixelmaster",
     likes: 1089,
-    coverImage: "/images/pixel-art.png",
+    coverImage: ImageUrls.styleImage("Pixel Art", "pixel"),
     tags: ["pixel", "retro", "game", "8bit", "pixel-art"],
   },
   {
@@ -164,7 +165,7 @@ const allStyles = [
     title: "Watercolor Dreams",
     creator: "@watercolorist",
     likes: 876,
-    coverImage: "/images/watercolor.png",
+    coverImage: ImageUrls.styleImage("Watercolor Dreams", "watercolor"),
     tags: ["watercolor", "painting", "artistic", "soft", "dreamy"],
   },
   {
@@ -172,7 +173,7 @@ const allStyles = [
     title: "Sci-Fi Worlds",
     creator: "@futurevisions",
     likes: 654,
-    coverImage: "/images/scifi-world.png",
+    coverImage: ImageUrls.styleImage("Sci-Fi Worlds", "scifi"),
     tags: ["sci-fi", "space", "futuristic", "alien", "landscape"],
   },
   {
@@ -180,7 +181,7 @@ const allStyles = [
     title: "Anime Portraits",
     creator: "@animefan",
     likes: 432,
-    coverImage: "/images/anime-portrait.png",
+    coverImage: ImageUrls.styleImage("Anime Portraits", "anime"),
     tags: ["anime", "portrait", "character", "japanese", "cartoon"],
   },
   {
@@ -188,7 +189,7 @@ const allStyles = [
     title: "Minimal Lines",
     creator: "@minimalist",
     likes: 321,
-    coverImage: "/images/minimal-lines.png",
+    coverImage: ImageUrls.styleImage("Minimal Lines", "minimal"),
     tags: ["minimalist", "lines", "simple", "clean", "modern"],
   },
   {
@@ -196,7 +197,7 @@ const allStyles = [
     title: "Surreal Dreams",
     creator: "@surrealartist",
     likes: 543,
-    coverImage: "/images/surreal-dream.png",
+    coverImage: ImageUrls.styleImage("Surreal Dreams", "fantasy"),
     tags: ["surreal", "fantasy", "dream", "imaginative", "abstract"],
   },
 ]

@@ -9,6 +9,7 @@ import { Download, Heart, MoreHorizontal, RefreshCw, Share2, Trash2 } from "luci
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { toast } from "@/components/ui/use-toast"
 import { formatDistanceToNow } from "date-fns"
+import { ImageUrls } from "@/lib/image-service"
 
 interface GenerationHistoryProps {
   history: any[]
@@ -75,7 +76,7 @@ export function GenerationHistory({ history }: GenerationHistoryProps) {
           <Card key={item.id} className="overflow-hidden">
             <div className="relative aspect-square overflow-hidden">
               <img
-                src={item.image || "/placeholder.svg"}
+                src={item.image || ImageUrls.placeholder(400, 400, `Generation ${item.id}`)}
                 alt={`Creation ${item.id}`}
                 className="object-cover w-full h-full"
               />

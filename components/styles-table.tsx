@@ -19,6 +19,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { ImageUrls } from "@/lib/image-service"
 
 interface Style {
   id: string
@@ -41,7 +42,7 @@ export function StylesTable() {
       id: "1",
       title: "Neon Dreams",
       status: "published",
-      coverImage: "/images/cyberpunk-neon.png",
+      coverImage: ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
       generations: 1243,
       revenue: 1250.45,
       conversionRate: 4.8,
@@ -51,7 +52,7 @@ export function StylesTable() {
       id: "2",
       title: "Vintage Film",
       status: "published",
-      coverImage: "/images/vintage-film.png",
+      coverImage: ImageUrls.styleImage("Vintage Film", "vintage"),
       generations: 982,
       revenue: 980.2,
       conversionRate: 3.9,
@@ -61,7 +62,7 @@ export function StylesTable() {
       id: "3",
       title: "Abstract Waves",
       status: "published",
-      coverImage: "/images/abstract-waves.png",
+      coverImage: ImageUrls.styleImage("Abstract Waves", "abstract"),
       generations: 756,
       revenue: 720.8,
       conversionRate: 3.2,
@@ -71,7 +72,7 @@ export function StylesTable() {
       id: "4",
       title: "Pixel Art",
       status: "published",
-      coverImage: "/images/pixel-art.png",
+      coverImage: ImageUrls.styleImage("Pixel Art", "pixel"),
       generations: 1089,
       revenue: 1100.5,
       conversionRate: 4.5,
@@ -81,7 +82,7 @@ export function StylesTable() {
       id: "5",
       title: "Watercolor Dreams",
       status: "published",
-      coverImage: "/images/watercolor.png",
+      coverImage: ImageUrls.styleImage("Watercolor Dreams", "watercolor"),
       generations: 876,
       revenue: 850.3,
       conversionRate: 3.7,
@@ -91,7 +92,7 @@ export function StylesTable() {
       id: "6",
       title: "Sci-Fi Worlds",
       status: "published",
-      coverImage: "/images/scifi-world.png",
+      coverImage: ImageUrls.styleImage("Sci-Fi Worlds", "scifi"),
       generations: 654,
       revenue: 630.9,
       conversionRate: 2.9,
@@ -101,7 +102,7 @@ export function StylesTable() {
       id: "7",
       title: "Anime Portraits",
       status: "draft",
-      coverImage: "/images/anime-portrait.png",
+      coverImage: ImageUrls.styleImage("Anime Portraits", "anime"),
       generations: 0,
       revenue: 0,
       conversionRate: 0,
@@ -111,7 +112,7 @@ export function StylesTable() {
       id: "8",
       title: "Minimal Lines",
       status: "deprecated",
-      coverImage: "/images/minimal-lines.png",
+      coverImage: ImageUrls.styleImage("Minimal Lines", "minimal"),
       generations: 321,
       revenue: 290.5,
       conversionRate: 1.8,
@@ -146,7 +147,7 @@ export function StylesTable() {
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded overflow-hidden">
             <img
-              src={row.original.coverImage || "/placeholder.svg"}
+              src={row.original.coverImage || ImageUrls.placeholder(40, 40, row.original.title)}
               alt={row.original.title}
               className="h-full w-full object-cover"
             />

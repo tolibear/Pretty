@@ -72,14 +72,56 @@ const styles = [
       "Vibrant cyberpunk aesthetics with neon-lit cityscapes, perfect for futuristic scenes with a touch of nostalgia. Creates stunning night scenes with glowing elements.",
     creator: {
       name: "Alex Rivera",
+      displayName: "Alex Rivera",
       handle: "@neonartist",
       avatar: ImageUrls.creatorAvatar("neonartist"),
       verified: true,
+      isVerified: true,
+      bio: "Digital artist specializing in cyberpunk and futuristic aesthetics. Creating AI styles that blend neon dreams with urban reality.",
+      stats: {
+        totalStyles: 12,
+        totalGenerations: 15420,
+        followers: 2340
+      },
+      otherStyles: [
+        {
+          id: "2",
+          title: "Retro Synthwave",
+          coverImage: ImageUrls.styleImage("Retro Synthwave", "synthwave"),
+          generations: 892,
+          rating: 4.6
+        },
+        {
+          id: "3", 
+          title: "Urban Glow",
+          coverImage: ImageUrls.styleImage("Urban Glow", "urban"),
+          generations: 1234,
+          rating: 4.7
+        },
+        {
+          id: "4",
+          title: "Digital Noir",
+          coverImage: ImageUrls.styleImage("Digital Noir", "noir"),
+          generations: 567,
+          rating: 4.9
+        }
+      ]
     },
     coverImage: ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
     examples: [
       ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
       ...ImageUrls.styleExamples("Neon Dreams", "cyberpunk", 5),
+    ],
+    exampleImages: [
+      ImageUrls.styleImage("Neon Dreams", "cyberpunk"),
+      ...ImageUrls.styleExamples("Neon Dreams", "cyberpunk", 5),
+    ],
+    examplePrompts: [
+      "A futuristic cityscape at night with neon signs reflecting on wet streets",
+      "Cyberpunk street scene with glowing advertisements and flying cars",
+      "Neon-lit alleyway with steam rising from manholes",
+      "High-tech building facade with holographic displays",
+      "Underground cyberpunk market with colorful lighting"
     ],
     stats: {
       likes: 1243,
@@ -101,5 +143,6 @@ const styles = [
       supportedRatios: ["1:1", "4:5", "16:9"],
     },
     tags: ["cyberpunk", "neon", "city", "futuristic", "night"],
+    isVerified: true,
   },
 ]
